@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Ivbags: tote bags pintadas a mano y diseños que cuentan tu historia." />
+    <title>ivbags | bolsos con historia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="top-note">hecho a mano en Bogotá <span>✦</span> envíos a todo Colombia</div>
+    <header class="site-header">
+      <a class="wordmark" href="#inicio" aria-label="Ir al inicio"><span>i</span>v<span>b</span>ags</a>
+      <nav class="main-nav" aria-label="Navegación principal">
+        <a href="#catalogo">Piezas únicas</a>
+        <a href="#personaliza">Personaliza</a>
+        <a href="#juntas">Diseñemos juntas</a>
+      </nav>
+      <button class="cart-button" id="cartButton" type="button" aria-label="Abrir carrito">carrito <span id="cartCount">0</span></button>
+    </header>
+
+    <main>
+      <section class="hero" id="inicio">
+        <div class="hero-copy">
+          <p class="eyebrow">tus ideas, pintadas a mano</p>
+          <h1>Una bolsa para<br /><em>tu propia historia.</em></h1>
+          <p class="hero-text">Piezas únicas, coloridas y hechas con intención. Lleva contigo algo que no se parece a nada más.</p>
+          <div class="hero-actions"><a class="button button-dark" href="#catalogo">Ver piezas únicas <span>↗</span></a><a class="text-link" href="#personaliza">Crear la mía <span>→</span></a></div>
+        </div>
+        <div class="hero-art" aria-label="Ilustración de tote bag pintada a mano">
+          <div class="sun-doodle">✳</div><div class="thread thread-one"></div><div class="thread thread-two"></div>
+          <div class="hero-bag"><div class="handle handle-left"></div><div class="handle handle-right"></div><div class="bag-face"><span class="bag-flower">✽</span><strong>tu<br />historia</strong><span class="bag-star">✦</span></div></div>
+          <div class="scribble">one of<br />a kind</div>
+        </div>
+      </section>
+
+      <section class="intro-strip"><p>objetos cotidianos, <strong>convertidos en pequeños amuletos</strong></p><span class="strip-mark">✦</span><p class="strip-small">pintados uno a uno<br />por Ivanna</p></section>
+
+      <section class="section catalog-section" id="catalogo">
+        <div class="section-heading"><div><p class="eyebrow">la colección</p><h2>Piezas únicas<span>.</span></h2></div><a class="text-link" href="#catalogo">Ver todas <span>→</span></a></div>
+        <div class="product-grid">
+          <article class="product-card"><div class="product-art art-sun"><span>☼</span><small>take<br />it slow</small></div><div class="product-meta"><div><h3>Sunshine tote</h3><p>pintada a mano · 1 disponible</p></div><strong>$145.000</strong></div><button class="add-button" data-product="Sunshine tote" data-price="145000">Añadir al carrito <span>+</span></button></article>
+          <article class="product-card"><div class="product-art art-garden"><span>✿</span><small>grow<br />your way</small></div><div class="product-meta"><div><h3>Garden notes</h3><p>pintada a mano · 1 disponible</p></div><strong>$165.000</strong></div><button class="add-button" data-product="Garden notes" data-price="165000">Añadir al carrito <span>+</span></button></article>
+          <article class="product-card"><div class="product-art art-moon"><span>☾</span><small>soft<br />days</small></div><div class="product-meta"><div><h3>Soft days</h3><p>pintada a mano · 1 disponible</p></div><strong>$155.000</strong></div><button class="add-button" data-product="Soft days" data-price="155000">Añadir al carrito <span>+</span></button></article>
+        </div>
+      </section>
+
+      <section class="customizer section" id="personaliza"><div class="customizer-copy"><p class="eyebrow">hazla tuya</p><h2>Tu idea,<br /><em>en una tote.</em></h2><p>Elige una base, cuéntanos qué quieres ver y armamos juntas un diseño que se sienta como tú.</p><a class="button button-dark" href="#personaliza">Empezar mi diseño <span>↗</span></a></div><div class="customizer-panel"><div class="panel-top"><span>mi tote en proceso</span><span class="step-label">01 / 04</span></div><div class="preview-wrap"><div id="customBag" class="custom-bag"><div class="custom-handle"></div><div id="customText" class="custom-text">tu<br />idea aquí</div><div id="customSticker" class="custom-sticker">✦</div></div></div><div class="controls"><label>Color de base <div class="swatches"><button class="swatch selected" style="--swatch:#f4e8cb" data-color="#f4e8cb" aria-label="Crema"></button><button class="swatch" style="--swatch:#d8d3b7" data-color="#d8d3b7" aria-label="Oliva claro"></button><button class="swatch" style="--swatch:#d88988" data-color="#d88988" aria-label="Rosa"></button><button class="swatch" style="--swatch:#e5b951" data-color="#e5b951" aria-label="Amarillo"></button></div></label><label>Tamaño <select id="sizeSelect"><option value="normal">Mediana · $120.000</option><option value="large">Grande · $145.000</option></select></label><label>Tu palabra o frase <input id="textInput" type="text" maxlength="24" placeholder="ej. días bonitos" /></label><label>Elemento decorativo <div class="sticker-options"><button class="sticker-option active" data-sticker="✦">✦</button><button class="sticker-option" data-sticker="✿">✿</button><button class="sticker-option" data-sticker="☼">☼</button><button class="sticker-option" data-sticker="♡">♡</button></div></label><label class="upload-label">Imagen de referencia <input id="imageInput" type="file" accept="image/*" /><span>+ Adjuntar imagen</span></label><button class="button button-olive" id="customAdd" type="button">Añadir mi diseño <span>↗</span></button></div></div></section>
+
+      <section class="advice-section" id="juntas"><div class="advice-image"><div class="portrait"><div class="portrait-hair"></div><div class="portrait-face"><span>⌁</span></div><div class="portrait-shirt"></div></div><span class="image-caption">ivanna<br />& tú</span></div><div class="advice-copy"><p class="eyebrow">un espacio para crear</p><h2>Diseñemos<br /><em>juntas.</em></h2><p>Hay ideas que se explican mejor conversando. Reserva una asesoría directa conmigo y hagamos realidad esa pieza que tienes en la cabeza.</p><a class="button button-dark" href="mailto:hola@ivbags.co?subject=Quiero%20diseñar%20juntas">Quiero asesoría <span>↗</span></a></div></section>
+    </main>
+
+    <footer class="site-footer"><div class="footer-brand"><a class="wordmark" href="#inicio"><span>i</span>v<span>b</span>ags</a><p>bolsos con historia<br />hechos con cariño.</p></div><div class="footer-links"><a href="#catalogo">Instagram ↗</a><a href="mailto:hola@ivbags.co">hola@ivbags.co</a><a href="#personaliza">Preguntas frecuentes</a></div><p class="copyright">© 2026 ivbags</p></footer>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
