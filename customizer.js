@@ -78,6 +78,8 @@ document.querySelectorAll('[data-font]').forEach((button) => button.addEventList
   textObject.dataset.font = button.dataset.font;
   textObject.style.fontFamily = button.dataset.font === 'serif' ? 'var(--serif)' : button.dataset.font === 'mono' ? 'Courier Prime, monospace' : button.dataset.font === 'round' ? 'var(--sans)' : button.dataset.font === 'typewriter' ? 'monospace' : 'var(--hand)';
 }));
+const textColorTools = document.querySelector('.type-color-tools');
+if (textColorTools && !textColorTools.querySelector('[data-text-color="#fff"]')) { const whiteColor = document.createElement('button'); whiteColor.className = 'type-color'; whiteColor.dataset.textColor = '#fff'; whiteColor.setAttribute('aria-label', 'Blanco'); textColorTools.append(whiteColor); }
 document.querySelectorAll('[data-text-color]').forEach((button) => button.addEventListener('click', () => { document.querySelector('.type-color.selected')?.classList.remove('selected'); button.classList.add('selected'); textObject.style.color = button.dataset.textColor; if (iconObject) iconObject.style.color = button.dataset.textColor; }));
 document.querySelectorAll('[data-icon]').forEach((button) => button.addEventListener('click', () => { iconObject.hidden = false; iconObject.querySelector('#customIcon').textContent = button.dataset.icon; selectObject(iconObject); document.querySelector('.icon-option.active')?.classList.remove('active'); button.classList.add('active'); }));
 
