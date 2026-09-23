@@ -1,54 +1,51 @@
-const cart = [];
-const cartCount = document.querySelector('#cartCount');
-const toast = document.querySelector('#toast');
-const customBag = document.querySelector('#customBag');
-const customText = document.querySelector('#customText');
-const customSticker = document.querySelector('#customSticker');
+const steps = [...document.querySelectorAll('.step')];
+const progress = [...document.querySelectorAll('.progress span')];
+const previewBag = document.querySelector('#previewBag');
+const previewText = document.querySelector('#previewText');
+const previewDecor = document.querySelector('#previewDecor');
+const previewStep = document.querySelector('#previewStep');
+let currentStep = 1;
 
-function showToast(message) {
-  toast.textContent = message;
-  toast.classList.add('visible');
-  window.setTimeout(() => toast.classList.remove('visible'), 2600);
+function renderStep() {
+  steps.forEach((step) => step.classList.toggle('active', Number(step.dataset.step) === currentStep));
+  progress.forEach((item, index) => item.classList.toggle('active', index < currentStep));
+  if (previewStep) previewStep.textContent = `0${currentStep} / 04`;
 }
 
-function addToCart(name, price) {
-  cart.push({ name, price });
-  cartCount.textContent = cart.length;
-  showToast(`${name} se añadió a tu carrito`);
-}
-
-document.querySelectorAll('.add-button').forEach((button) => {
-  button.addEventListener('click', () => addToCart(button.dataset.product, Number(button.dataset.price)));
-});
-
-document.querySelectorAll('.swatch').forEach((swatch) => {
-  swatch.addEventListener('click', () => {
-    document.querySelector('.swatch.selected')?.classList.remove('selected');
-    swatch.classList.add('selected');
-    customBag.style.backgroundColor = swatch.dataset.color;
-  });
-});
-
-document.querySelectorAll('.sticker-option').forEach((option) => {
+document.querySelectorAll('[data-color]').forEach((option) => {
   option.addEventListener('click', () => {
-    document.querySelector('.sticker-option.active')?.classList.remove('active');
-    option.classList.add('active');
-    customSticker.textContent = option.dataset.sticker;
+    document.querySelector('[data-color].selected')?.classList.remove('selected');
+    option.classList.add('selected');
+    if (previewBag) previewBag.style.backgroundColor = option.dataset.color;
   });
 });
 
-document.querySelector('#textInput').addEventListener('input', (event) => {
-  const value = event.target.value.trim();
-  customText.innerHTML = value ? value.replace(/\s+/g, '<br />') : 'tu<br />idea aquí';
+document.querySelectorAll('[data-decor]').forEach((option) => {
+  option.addEventListener('click', () => {
+    document.querySelector('[data-decor].selected')?.classList.remove('selected');
+    option.classList.add('selected');
+    if (previewDecor) previewDecor.textContent = option.dataset.decor;
+  });
 });
 
-document.querySelector('#sizeSelect').addEventListener('change', (event) => {
-  customBag.style.transform = event.target.value === 'large' ? 'scale(1.14)' : 'scale(1)';
+document.querySelector('#customPhrase')?.addEventListener('input', (event) => {
+  const text = event.target.value.trim();
+  if (previewText) previewText.innerHTML = text ? text.replace(/\s+/g, '<br />') : 'tu<br />idea aquí';
 });
 
-document.querySelector('#imageInput').addEventListener('change', (event) => {
-  if (event.target.files.length) showToast('Imagen de referencia adjuntada');
-});
+document.querySelectorAll('.next-step').forEach((button) => button.addEventListener('click', () => {
+  currentStep = Math.min(currentStep + 1, 4);
+  renderStep();
+}));
+document.querySelectorAll('.previous-step').forEach((button) => button.addEventListener('click', () => {
+  currentStep = Math.max(currentStep - 1, 1);
+  renderStep();
+}));
 
-document.querySelector('#customAdd').addEventListener('click', () => addToCart('Mi tote personalizada', document.querySelector('#sizeSelect').value === 'large' ? 145000 : 120000));
-document.querySelector('#cartButton').addEventListener('click', () => showToast(cart.length ? `${cart.length} pieza(s) en tu carrito · checkout próximamente` : 'Tu carrito está esperando una pieza especial'));
+document.querySelector('#referenceImage')?.addEventListener('change', (event) => {
+  if (event.target.files.length) document.querySelector('#referenceStatus')?.classList.add('show');
+});
+document.querySelector('#finishDesign')?.addEventListener('click', (event) => {
+  event.currentTarget.textContent = 'Diseño guardado ✓';
+  event.currentTarget.disabled = true;
+});
