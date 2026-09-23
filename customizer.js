@@ -1,7 +1,9 @@
+const optionStyles = document.createElement('link'); optionStyles.rel = 'stylesheet'; optionStyles.href = 'customizer-options.css'; document.head.append(optionStyles);
 const stage = document.querySelector('#designArea');
 const toteImage = document.querySelector('.tote-artboard');
 const textObject = document.querySelector('#textObject');
 const imageObject = document.querySelector('#imageObject');
+const iconObject = document.querySelector('#iconObject');
 let activeObject = textObject;
 const palette = [{ name: 'Blanca', color: '#fff' }, { name: 'Negra', color: '#161817' }, { name: 'Gris', color: '#929292' }, { name: 'Beige', color: '#e4d2b6' }, { name: 'Oliva', color: '#7a8551' }];
 const colorOptions = document.querySelector('.color-options');
@@ -58,7 +60,7 @@ function makeResizable(object) {
   });
   handle.addEventListener('pointerup', () => { resizing = false; });
 }
-makeDraggable(textObject); makeResizable(textObject); makeDraggable(imageObject); makeResizable(imageObject);
+makeDraggable(textObject); makeResizable(textObject); makeDraggable(imageObject); makeResizable(imageObject); makeDraggable(iconObject); makeResizable(iconObject);
 
 document.querySelectorAll('[data-tote-color]').forEach((button) => button.addEventListener('click', () => {
   document.querySelector('.color-option.selected')?.classList.remove('selected');
@@ -74,8 +76,10 @@ document.querySelectorAll('[data-font]').forEach((button) => button.addEventList
   document.querySelector('.font-button.active')?.classList.remove('active');
   button.classList.add('active');
   textObject.dataset.font = button.dataset.font;
-  textObject.style.fontFamily = button.dataset.font === 'serif' ? 'var(--serif)' : button.dataset.font === 'mono' ? 'Courier Prime, monospace' : 'var(--hand)';
+  textObject.style.fontFamily = button.dataset.font === 'serif' ? 'var(--serif)' : button.dataset.font === 'mono' ? 'Courier Prime, monospace' : button.dataset.font === 'round' ? 'var(--sans)' : button.dataset.font === 'typewriter' ? 'monospace' : 'var(--hand)';
 }));
+document.querySelectorAll('[data-text-color]').forEach((button) => button.addEventListener('click', () => { document.querySelector('.type-color.selected')?.classList.remove('selected'); button.classList.add('selected'); textObject.style.color = button.dataset.textColor; if (iconObject) iconObject.style.color = button.dataset.textColor; }));
+document.querySelectorAll('[data-icon]').forEach((button) => button.addEventListener('click', () => { iconObject.hidden = false; iconObject.querySelector('#customIcon').textContent = button.dataset.icon; selectObject(iconObject); document.querySelector('.icon-option.active')?.classList.remove('active'); button.classList.add('active'); }));
 
 document.querySelector('#designImageInput').addEventListener('change', (event) => {
   const file = event.target.files[0];
@@ -89,7 +93,7 @@ document.querySelector('#saveDesign').addEventListener('click', () => {
   if (!getCustomer()) { openCustomerAuth(); document.querySelector('#saveMessage').textContent = 'Inicia sesión para guardar tu diseño y comprarlo.'; return; }
   const selectedColor = document.querySelector('.color-option.selected')?.dataset.toteColor || '#f2eadb';
   const cart = JSON.parse(localStorage.getItem('ivbags-cart') || '[]');
-  cart.push({ id: `custom-${Date.now()}`, name: 'Tote personalizada', price: 145000, color: selectedColor, text: textObject.querySelector('span').textContent, image: document.querySelector('#uploadedImage').src || '', quantity: 1 });
+  cart.push({ id: `custom-${Date.now()}`, name: 'Tote personalizada', price: 145000, color: selectedColor, text: textObject.querySelector('span').textContent, textColor: getComputedStyle(textObject).color, font: textObject.style.fontFamily || 'manuscrita', icon: iconObject.hidden ? '' : iconObject.querySelector('#customIcon').textContent, image: document.querySelector('#uploadedImage').src || '', quantity: 1 });
   localStorage.setItem('ivbags-cart', JSON.stringify(cart));
   document.querySelector('#saveMessage').innerHTML = 'Tu diseño está en el carrito ✓ <a href="checkout.html">Continuar al pago →</a>';
 });

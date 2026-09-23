@@ -1,3 +1,4 @@
+const checkoutStyles = document.createElement('link'); checkoutStyles.rel = 'stylesheet'; checkoutStyles.href = 'checkout-note.css'; document.head.append(checkoutStyles);
 const cartKey = 'ivbags-cart';
 let cart = JSON.parse(localStorage.getItem(cartKey) || '[]');
 const money = (value) => `$${Number(value).toLocaleString('es-CO')}`;
