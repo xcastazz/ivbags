@@ -61,6 +61,8 @@ Root directory: /
 window.IVBAGS_API_URL = 'https://tu-api-real.onrender.com/api';
 ```
 
+El plan gratuito de Render no incluye almacenamiento persistente. La API actual usa SQLite, así que los datos locales pueden perderse al reiniciar o desplegar. Para una tienda oficial migra la base de datos a Neon/PostgreSQL antes de aceptar ventas reales.
+
 ## 3. SMTP
 
 Para que llegue la verificación de correo necesitas un proveedor real, por ejemplo Resend, Brevo, Mailgun o Gmail con App Password. Completa `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER` y `SMTP_PASSWORD` en Render y redeploya.

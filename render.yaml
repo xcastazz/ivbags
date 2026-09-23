@@ -34,7 +34,3 @@ services:
         sync: false
       - key: WOMPI_EVENTS_SECRET
         sync: false
-    disk:
-      name: ivbags-data
-      mountPath: /opt/render/project/src/backend
-      sizeGB: 1
