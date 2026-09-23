@@ -1,5 +1,5 @@
 const customerKey = 'ivbags-customer';
-const apiBase = window.IVBAGS_API_URL || 'http://localhost:8787/api';
+const apiBase = window.IVBAGS_API_URL || (location.hostname === 'localhost' || location.protocol === 'file:' ? 'http://localhost:8787/api' : 'https://ivbags-api.onrender.com/api');
 const getCustomer = () => JSON.parse(localStorage.getItem(customerKey) || 'null');
 const saveCustomer = (customer) => localStorage.setItem(customerKey, JSON.stringify(customer));
 function closeCustomerAuth(modal) { modal.classList.remove('open'); modal.style.opacity = '0'; modal.style.pointerEvents = 'none'; }
