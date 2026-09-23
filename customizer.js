@@ -76,4 +76,10 @@ document.querySelector('#designImageInput').addEventListener('change', (event) =
   reader.readAsDataURL(file);
 });
 document.querySelector('#removeImage').addEventListener('click', () => { imageObject.hidden = true; document.querySelector('#designImageInput').value = ''; selectObject(textObject); });
-document.querySelector('#saveDesign').addEventListener('click', () => { document.querySelector('#saveMessage').textContent = 'Tu diseño quedó guardado. Nos pondremos en contacto contigo ✓'; });
+document.querySelector('#saveDesign').addEventListener('click', () => {
+  const selectedColor = document.querySelector('.color-option.selected')?.dataset.toteColor || '#f2eadb';
+  const cart = JSON.parse(localStorage.getItem('ivbags-cart') || '[]');
+  cart.push({ id: `custom-${Date.now()}`, name: 'Tote personalizada', price: 145000, color: selectedColor, text: textObject.querySelector('span').textContent, image: document.querySelector('#uploadedImage').src || '', quantity: 1 });
+  localStorage.setItem('ivbags-cart', JSON.stringify(cart));
+  document.querySelector('#saveMessage').innerHTML = 'Tu diseño está en el carrito ✓ <a href="checkout.html">Continuar al pago →</a>';
+});
