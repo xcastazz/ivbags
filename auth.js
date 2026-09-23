@@ -1,0 +1,19 @@
+const customerKey = 'ivbags-customer';
+const getCustomer = () => JSON.parse(localStorage.getItem(customerKey) || 'null');
+const saveCustomer = (customer) => localStorage.setItem(customerKey, JSON.stringify(customer));
+function customerModal() {
+  if (document.querySelector('#customerAuth')) return document.querySelector('#customerAuth');
+  const modal = document.createElement('div');
+  modal.id = 'customerAuth'; modal.className = 'customer-auth'; modal.innerHTML = `<div class="customer-auth-card"><button class="customer-auth-close" aria-label="Cerrar">×</button><p class="page-kicker">tu espacio iv bags</p><h2>Guarda tus ideas,<br/><em>llévalas contigo.</em></h2><div class="auth-tabs"><button class="active" data-auth-tab="login">Iniciar sesión</button><button data-auth-tab="register">Crear cuenta</button></div><form id="customerAuthForm"><label>Nombre<input id="customerFullName" required placeholder="Tu nombre"/></label><label>Correo electrónico<input id="customerEmail" type="email" required placeholder="hola@ejemplo.com"/></label><label>Contraseña<input id="customerPassword" type="password" minlength="6" required placeholder="mínimo 6 caracteres"/></label><button class="page-action" type="submit" id="customerAuthSubmit">Entrar a mi espacio ↗</button><p class="customer-auth-message" id="customerAuthMessage"></p></form></div></div>`;
+  document.body.append(modal);
+  let mode = 'login';
+  modal.querySelectorAll('[data-auth-tab]').forEach((tab) => tab.addEventListener('click', () => { mode = tab.dataset.authTab; modal.querySelectorAll('[data-auth-tab]').forEach((item) => item.classList.toggle('active', item === tab)); modal.querySelector('#customerFullName').parentElement.hidden = mode === 'login'; modal.querySelector('#customerAuthSubmit').textContent = mode === 'login' ? 'Entrar a mi espacio ↗' : 'Crear mi cuenta ↗'; }));
+  modal.querySelector('[data-auth-tab="login"]').click();
+  modal.querySelector('.customer-auth-close').addEventListener('click', () => { modal.classList.remove('open'); modal.style.opacity = '0'; modal.style.pointerEvents = 'none'; });
+  modal.addEventListener('click', (event) => { if (event.target === modal) { modal.classList.remove('open'); modal.style.opacity = '0'; modal.style.pointerEvents = 'none'; } });
+  modal.querySelector('#customerAuthForm').addEventListener('submit', (event) => { event.preventDefault(); const email = modal.querySelector('#customerEmail').value.trim(); const password = modal.querySelector('#customerPassword').value; const name = modal.querySelector('#customerFullName').value.trim() || email.split('@')[0]; const stored = JSON.parse(localStorage.getItem(`ivbags-user-${email}`) || 'null'); if (mode === 'register') { saveCustomer({ name, email }); localStorage.setItem(`ivbags-user-${email}`, JSON.stringify({ name, email, password })); modal.classList.remove('open'); modal.style.opacity = '0'; modal.style.pointerEvents = 'none'; updateCustomerUI(); return; } if (stored && stored.password === password) { saveCustomer({ name: stored.name, email }); modal.classList.remove('open'); modal.style.opacity = '0'; modal.style.pointerEvents = 'none'; updateCustomerUI(); } else { modal.querySelector('#customerAuthMessage').textContent = 'No encontramos esa cuenta o contraseña.'; } });
+  return modal;
+}
+function openCustomerAuth() { const modal = customerModal(); modal.classList.add('open'); modal.style.opacity = '1'; modal.style.pointerEvents = 'auto'; }
+function updateCustomerUI() { const customer = getCustomer(); document.querySelectorAll('[data-customer-name]').forEach((node) => { node.textContent = customer ? customer.name : 'Iniciar sesión'; }); document.querySelectorAll('[data-customer-action]').forEach((node) => node.onclick = customer ? () => { localStorage.removeItem(customerKey); updateCustomerUI(); } : openCustomerAuth); }
+document.addEventListener('DOMContentLoaded', () => { customerModal(); updateCustomerUI(); });

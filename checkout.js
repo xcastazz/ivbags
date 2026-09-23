@@ -12,11 +12,16 @@ function renderCart() {
 renderCart();
 document.querySelectorAll('.payment-option').forEach((button) => button.addEventListener('click', () => { document.querySelector('.payment-option.active')?.classList.remove('active'); button.classList.add('active'); document.querySelector('#cardFields').hidden = button.dataset.payment !== 'card'; }));
 document.querySelector('#payButton').addEventListener('click', () => {
+  const customer = JSON.parse(localStorage.getItem('ivbags-customer') || 'null');
+  if (!customer) { alert('Inicia sesión antes de realizar la compra.'); window.location.href = 'index.html'; return; }
   const required = ['customerName', 'customerEmail', 'customerAddress', 'customerCity', 'customerPhone'];
   const valid = required.every((id) => document.querySelector(`#${id}`).value.trim());
   if (!cart.length) { alert('Añade una pieza al carrito antes de pagar.'); return; }
   if (!valid) { document.querySelector(`#${required.find((id) => !document.querySelector(`#${id}`).value.trim())}`).focus(); return; }
   const number = `#IV-${Math.floor(1000 + Math.random() * 8999)}`;
+  const orders = JSON.parse(localStorage.getItem('ivbags-orders') || '[]');
+  orders.push({ number, customer, delivery: { name: document.querySelector('#customerName').value, email: document.querySelector('#customerEmail').value, address: document.querySelector('#customerAddress').value, city: document.querySelector('#customerCity').value, phone: document.querySelector('#customerPhone').value }, items: cart, total: total(), status: 'Pagado', createdAt: new Date().toISOString() });
+  localStorage.setItem('ivbags-orders', JSON.stringify(orders));
   document.querySelector('#orderNumber').textContent = number;
   document.querySelector('#confirmation').hidden = false;
   localStorage.removeItem(cartKey);
