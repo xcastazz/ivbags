@@ -3,6 +3,15 @@ const toteImage = document.querySelector('.tote-artboard');
 const textObject = document.querySelector('#textObject');
 const imageObject = document.querySelector('#imageObject');
 let activeObject = textObject;
+const palette = [{ name: 'Blanca', color: '#fff' }, { name: 'Negra', color: '#161817' }, { name: 'Gris', color: '#929292' }, { name: 'Beige', color: '#e4d2b6' }, { name: 'Oliva', color: '#7a8551' }];
+const colorOptions = document.querySelector('.color-options');
+palette.forEach((item, index) => {
+  const option = colorOptions.children[index] || document.createElement('button');
+  option.className = 'color-option' + (index === 0 ? ' selected' : '');
+  option.dataset.toteColor = item.color;
+  option.setAttribute('aria-label', item.name);
+  if (index === 4 && !option.parentElement) colorOptions.append(option);
+});
 
 function selectObject(object) {
   document.querySelectorAll('.design-object').forEach((item) => item.classList.remove('selected'));
