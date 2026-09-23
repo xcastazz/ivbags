@@ -4,6 +4,7 @@ const closeAbout = document.querySelector('.about-close');
 function setAbout(open) {
   aboutModal?.classList.toggle('open', open);
   aboutModal?.setAttribute('aria-hidden', String(!open));
+  document.querySelector('.home-board')?.classList.toggle('letter-open', open);
 }
 envelopeTrigger?.addEventListener('click', () => setAbout(true));
 closeAbout?.addEventListener('click', () => setAbout(false));
