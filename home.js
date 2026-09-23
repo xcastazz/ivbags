@@ -1,3 +1,4 @@
+const miniToteStyles = document.createElement('link'); miniToteStyles.rel = 'stylesheet'; miniToteStyles.href = 'mini-totes.css'; document.head.append(miniToteStyles);
 const aboutModal = document.querySelector('#aboutModal');
 const envelopeTrigger = document.querySelector('.envelope-trigger');
 const closeAbout = document.querySelector('.about-close');
