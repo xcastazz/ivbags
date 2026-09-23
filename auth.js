@@ -3,7 +3,7 @@ const apiBase = window.IVBAGS_API_URL || (location.hostname === 'localhost' || l
 const getCustomer = () => JSON.parse(localStorage.getItem(customerKey) || 'null');
 const saveCustomer = (customer) => localStorage.setItem(customerKey, JSON.stringify(customer));
 function closeCustomerAuth(modal) { modal.classList.remove('open'); modal.style.opacity = '0'; modal.style.pointerEvents = 'none'; }
-async function api(path, options = {}) { const response = await fetch(`${apiBase}${path}`, { ...options, headers: { 'Content-Type': 'application/json', ...(options.headers || {}) } }); const body = await response.json().catch(() => ({})); if (!response.ok) throw new Error(body.error || 'No se pudo completar la solicitud'); return body; }
+async function api(path, options = {}) { try { const response = await fetch(`${apiBase}${path}`, { ...options, headers: { 'Content-Type': 'application/json', ...(options.headers || {}) } }); const body = await response.json().catch(() => ({})); if (!response.ok) throw new Error(body.error || 'No se pudo completar la solicitud'); return body; } catch (error) { if (error instanceof TypeError) throw new Error(`No se pudo conectar con la API (${apiBase}). Inicia el backend o configura la URL pública de Render.`); throw error; } }
 function customerModal() {
   if (document.querySelector('#customerAuth')) return document.querySelector('#customerAuth');
   const modal = document.createElement('div'); modal.id = 'customerAuth'; modal.className = 'customer-auth';
