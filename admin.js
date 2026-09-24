@@ -1,3 +1,4 @@
+const brandStyles = document.createElement('link'); brandStyles.rel = 'stylesheet'; brandStyles.href = 'admin-brand.css'; document.head.append(brandStyles);
 const sessionKey = 'ivbags-admin-session';
 const stateKey = 'ivbags-admin-state';
 const usersKey = 'ivbags-admin-users';
