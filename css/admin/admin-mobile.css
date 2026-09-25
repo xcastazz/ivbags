@@ -44,6 +44,7 @@
   .stat-card strong{font-size:22px}
   .admin-nav a{font-size:10px;padding:9px}
   .production-design-preview{height:130px;width:105px}
+  .admin-product-edit{min-height:38px;min-width:38px}
   .invoice-price-editor{align-items:stretch;display:grid;grid-template-columns:1fr}
   .invoice-price-editor input{width:100%}
 }
