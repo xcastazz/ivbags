@@ -60,6 +60,7 @@ function showAdmin() {
   loadAdminModule('js/admin/admin-data.js');
   loadAdminModule('js/admin/admin-records.js');
   loadAdminModule('js/admin/admin-preview-exact.js');
+  loadAdminModule('js/admin/admin-preview-clean.js');
   loadAdminModule('js/admin/admin-profile.js');
   loadAdminModule('js/admin/admin-whatsapp.js');
   loadAdminModule('js/admin/admin-search.js');
