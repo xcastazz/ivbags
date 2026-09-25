@@ -1,0 +1,1 @@
+ALTER TABLE products ADD COLUMN is_customized INTEGER NOT NULL DEFAULT 0;

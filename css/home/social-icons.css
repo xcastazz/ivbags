@@ -1,0 +1,55 @@
+.social-links {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  z-index: 20;
+}
+
+.social-links a {
+  align-items: center;
+  border: 1px solid rgba(38, 58, 49, 0.2);
+  border-radius: 50%;
+  box-sizing: border-box;
+  color: var(--forest, #263a31);
+  display: grid;
+  flex: 0 0 44px;
+  height: 44px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  place-items: center;
+  width: 44px;
+}
+
+.social-links a:hover,
+.social-links a:focus-visible {
+  background: rgba(255, 255, 255, 0.78);
+  transform: translateY(-2px);
+}
+
+.social-links svg {
+  display: block;
+  fill: none;
+  height: 22px;
+  overflow: visible;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+  width: 22px;
+}
+
+@media (max-width: 700px) {
+  .social-links {
+    bottom: 5vh;
+    gap: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .social-links a {
+    flex-basis: 42px;
+    height: 42px;
+    width: 42px;
+  }
+}

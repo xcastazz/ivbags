@@ -1,0 +1,12 @@
+.git
+.git/**
+.wrangler
+.wrangler/**
+backend
+backend/**
+node_modules
+node_modules/**
+*.sqlite
+*.log
+.env
+.env.*

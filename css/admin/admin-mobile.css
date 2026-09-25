@@ -1,0 +1,49 @@
+@media(max-width:900px){
+  .admin-layout{display:block;min-height:0}
+  .admin-topbar{height:64px;padding:0 16px}
+  .admin-logo{font-size:34px}
+  .admin-topbar-meta{gap:10px;font-size:9px}
+  .admin-topbar-meta>a{display:none}
+  .profile-button{font-size:11px;padding:8px 10px}
+  .admin-sidebar{padding:10px 12px;position:sticky;top:64px;z-index:4}
+  .sidebar-label,.sidebar-bottom{display:none}
+  .admin-nav{display:flex;gap:6px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none}
+  .admin-nav::-webkit-scrollbar{display:none}
+  .admin-nav a{flex:0 0 auto;font-size:11px;gap:6px;padding:10px 11px;white-space:nowrap}
+  .admin-main{padding:30px 18px 70px}
+  .admin-heading{align-items:flex-start;display:block;margin-bottom:28px}
+  .admin-heading h1{font-size:48px!important}
+  .stats-grid{gap:10px;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat-card{min-width:0;padding:14px}
+  .stat-card strong{font-size:25px}
+  .stat-card span{font-size:9px;letter-spacing:.06em}
+  .dashboard-charts{grid-template-columns:1fr}
+  .dashboard-chart{min-width:0;overflow:hidden}
+  .sales-table{overflow:visible}
+  .sales-table>.sales-row:first-child{display:none}
+  .sales-row.sale-row{align-items:start;display:grid;gap:8px;grid-template-columns:1fr auto;min-width:0;padding:16px}
+  .sales-row.sale-row>span,.sales-row.sale-row>strong{min-width:0;overflow-wrap:anywhere}
+  .sales-row.sale-row .order-code{grid-column:1}
+  .sales-row.sale-row .status-select{grid-column:1;max-width:180px}
+  .sales-row.sale-row .row-delete{grid-column:2;grid-row:1}
+  .production-board{grid-template-columns:1fr;overflow:visible}
+  .production-column{min-width:0}
+  .production-card{min-width:0}
+  .invoice-row{align-items:flex-start;display:grid;grid-template-columns:1fr auto;gap:12px}
+  .invoice-row .row-action{grid-column:1}
+  .invoice-row .row-delete{grid-column:2;grid-row:1}
+  .records-grid{grid-template-columns:1fr}
+  .admin-modal{padding:10px}
+  .admin-modal .modal-card{max-height:calc(100dvh - 20px);max-width:100%;overflow:auto;width:100%}
+}
+@media(max-width:480px){
+  .admin-topbar-meta .live-dot{display:none}
+  .admin-main{padding-left:14px;padding-right:14px}
+  .admin-heading h1{font-size:40px!important}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .stat-card strong{font-size:22px}
+  .admin-nav a{font-size:10px;padding:9px}
+  .production-design-preview{height:130px;width:105px}
+  .invoice-price-editor{align-items:stretch;display:grid;grid-template-columns:1fr}
+  .invoice-price-editor input{width:100%}
+}

@@ -1,2 +1,34 @@
 <!doctype html>
-<html lang="es"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>iv bags | entrega</title><link rel="stylesheet" href="styles.css"/></head><body class="inner-page"><header class="page-header"><a class="page-logo" href="index.html">iv bags</a><a class="back-link" href="index.html">← inicio</a></header><main class="page-main"><p class="page-kicker">del taller a tus manos</p><h1 class="page-title">Tu pedido, <em>en camino.</em></h1><div class="custom-flow"><section><h2>¿Ya hiciste tu pedido?</h2><p>Escribe el número que recibiste por correo o WhatsApp y te contamos en qué momento de la creación está tu pieza.</p><input type="text" placeholder="ej. IV-2048" aria-label="Número de pedido"/><p style="margin-top:30px"><button class="page-action" type="button" onclick="this.textContent='Buscando tu pedido…'">Consultar estado ↗</button></p></section><aside class="preview-panel"><div class="preview-label"><span>ruta de tu pieza</span><span>01 — 04</span></div><div class="preview-stage"><div class="category-art">recibido<br/><br/>pintando<br/><br/>empacando<br/><br/>contigo</div></div></aside></div></main><footer class="site-footer">¿Tienes dudas? hola@ivbags.co · iv bags · 2026</footer></body></html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iv bags | entrega</title>
+  <link rel="stylesheet" href="css/core/styles.css" />
+  <link rel="stylesheet" href="css/catalog/delivery-tracking.css" />
+</head>
+<body class="inner-page delivery-page">
+  <header class="page-header"><a class="page-logo" href="index.html">iv bags</a><a class="back-link" href="index.html">← inicio</a></header>
+  <main class="page-main delivery-main">
+    <p class="page-kicker">del taller a tus manos</p>
+    <h1 class="page-title">Tu pedido,<br /><em>en camino.</em></h1>
+    <div class="custom-flow">
+      <section class="delivery-lookup">
+        <h2>¿Ya hiciste tu pedido?</h2>
+        <p>Escribe el número recibido por correo o WhatsApp para consultar el estado real de tu pieza.</p>
+        <label class="visually-hidden" for="deliveryReference">Número de pedido</label>
+        <input id="deliveryReference" type="text" placeholder="ej. IV-2048" aria-label="Número de pedido" />
+        <button class="page-action" id="lookupDelivery" type="button">Consultar estado ↗</button>
+        <p class="delivery-message" id="deliveryMessage" role="status"></p>
+      </section>
+      <aside class="preview-panel delivery-panel">
+        <div class="preview-label"><span>ruta de tu pieza</span><span id="deliveryProgress">01 — 04</span></div>
+        <div class="preview-stage"><div class="delivery-route"><span data-step="pending">recibido</span><span data-step="En producción">en producción</span><span data-step="Enviado">enviado</span><span data-step="Entregado">entregado</span></div></div>
+        <div class="delivery-result" id="deliveryResult" hidden></div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site-footer">¿Tienes dudas? hola@ivbags.co · iv bags · 2026</footer>
+  <script src="js/catalog/delivery-tracking.js"></script>
+</body>
+</html>

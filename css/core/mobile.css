@@ -1,0 +1,19 @@
+@media (max-width: 700px){
+  html,body{max-width:100%;overflow-x:hidden}
+  .page-header{padding:17px 20px}
+  .page-logo{font-size:34px}
+  .back-link{font-size:10px;white-space:nowrap}
+  .page-main{padding:42px 20px 64px}
+  .page-title{font-size:clamp(48px,15vw,70px);margin:14px 0 34px;max-width:100%}
+  .page-kicker{font-size:10px;letter-spacing:.12em}
+  .page-action{min-height:48px;padding:14px 17px}
+  .global-cart-button{bottom:18px;right:18px}
+  .customer-bubble{bottom:78px;right:18px}
+  .modal-close{min-height:42px;min-width:42px}
+}
+@media (max-width: 420px){
+  .page-header{padding-left:16px;padding-right:16px}
+  .page-main{padding-left:16px;padding-right:16px}
+  .page-title{font-size:48px}
+  .page-action{width:100%}
+}

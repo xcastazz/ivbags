@@ -1,0 +1,56 @@
+.home-logo {
+  align-items: center;
+  display: inline-flex;
+  font-size: clamp(48px, 6vw, 78px);
+  gap: 2px;
+  left: 8vw;
+  letter-spacing: 0;
+  right: auto;
+  top: 6vh;
+  transform: rotate(-3deg);
+}
+
+.home-logo::after {
+  border-bottom-width: 3px;
+  bottom: 11px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-4deg);
+  width: 72%;
+}
+
+.home-logo img {
+  display: block;
+  height: 132px;
+  object-fit: contain;
+  width: 178px;
+}
+
+.home-logo span {
+  display: block;
+  font-size: 0.82em;
+  position: relative;
+  transform: translateX(-52px);
+  z-index: 2;
+}
+
+@media (max-width: 700px) {
+  .home-logo {
+    left: 8vw;
+    right: auto;
+    top: 5vh;
+  }
+
+  .home-logo img {
+    height: 104px;
+    width: 142px;
+  }
+
+  .home-logo span {
+    font-size: 0.78em;
+    transform: translateX(-40px);
+  }
+
+  .home-logo::after {
+    left: 38px;
+  }
+}

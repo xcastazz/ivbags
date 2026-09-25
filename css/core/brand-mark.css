@@ -1,0 +1,115 @@
+.page-logo,
+.admin-logo {
+  align-items: center;
+  color: var(--green) !important;
+  display: inline-flex;
+  font-family: var(--hand) !important;
+  gap: 0;
+  letter-spacing: 0 !important;
+  position: relative;
+}
+
+.page-logo,
+.admin-logo {
+  font-size: 0 !important;
+}
+
+.page-logo::before,
+.admin-logo::before {
+  background: url('../../assets/image-Photoroom (2)-Photoroom.png') center / contain no-repeat;
+  content: '';
+  display: block;
+  flex: 0 0 auto;
+}
+
+.page-logo::after,
+.admin-logo::after {
+  color: var(--green);
+  content: 'bags';
+  display: block;
+  font-family: var(--hand);
+  position: relative;
+  z-index: 1;
+}
+
+.page-logo img,
+.admin-logo img {
+  display: block;
+  object-fit: contain;
+}
+
+.page-logo::before {
+  height: 58px;
+  width: 76px;
+}
+
+.page-logo::after {
+  font-size: 35px;
+  margin-left: -22px;
+}
+
+.admin-logo::before {
+  height: 50px;
+  width: 66px;
+}
+
+.admin-logo::after {
+  font-size: 34px;
+  margin-left: -19px;
+}
+
+.page-logo img {
+  height: 48px;
+  width: 64px;
+}
+
+.page-logo span {
+  font-size: 1em;
+  margin-left: -19px;
+  position: relative;
+  z-index: 1;
+}
+
+.admin-logo img {
+  height: 42px;
+  width: 56px;
+}
+
+.admin-logo span {
+  font-size: .92em;
+  margin-left: -16px;
+  position: relative;
+  z-index: 1;
+}
+
+.page-logo img,
+.page-logo span,
+.admin-logo img,
+.admin-logo span {
+  display: none;
+}
+
+.login-card .admin-logo {
+  font-size: 42px;
+}
+
+@media (max-width: 700px) {
+  .page-logo img {
+    height: 42px;
+    width: 56px;
+  }
+
+  .page-logo::before {
+    height: 50px;
+    width: 66px;
+  }
+
+  .page-logo span {
+    margin-left: -17px;
+  }
+
+  .page-logo::after {
+    font-size: 30px;
+    margin-left: -20px;
+  }
+}

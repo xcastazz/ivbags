@@ -3,3 +3,5 @@ backend/.env
 backend/ivbags.sqlite
 backend/uploads/
 *.log
+.wrangler/
+*.sqlite
