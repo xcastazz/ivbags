@@ -23,9 +23,10 @@ function renderCart() {
   document.querySelector('#cartItems').innerHTML = cart.length ? cart.map((item, index) => `<div class="cart-item"><div class="cart-item-preview">${item.image ? `<img src="${item.image}" alt="Diseño de ${item.name}"/>` : '✦'}</div><div class="cart-item-info"><strong>${item.name}</strong><small>${item.text || 'pieza pintada a mano'}<br/>cantidad: ${item.quantity}</small></div><div><span class="cart-item-price">${money(item.price * item.quantity)}</span><button class="remove-item" data-remove="${index}" aria-label="Quitar ${item.name}">×</button></div></div>`).join('') : '<p class="empty-cart">Tu carrito está esperando una pieza especial.</p>';
   document.querySelectorAll('[data-remove]').forEach((button) => button.addEventListener('click', () => { cart.splice(Number(button.dataset.remove), 1); localStorage.setItem(cartKey, JSON.stringify(cart)); renderCart(); }));
 }
+async function validateCartStock() { const response = await fetch('/api/products'); const products = await response.json().catch(() => []); if (!response.ok || !Array.isArray(products)) throw new Error('No pudimos verificar el stock. Inténtalo de nuevo.'); const requested = new Map(); cart.forEach((item) => { if (item.productId) requested.set(Number(item.productId), (requested.get(Number(item.productId)) || 0) + Number(item.quantity || 1)); }); for (const [productId, quantity] of requested) { const product = products.find((entry) => Number(entry.id) === productId); if (!product || Number(product.stock) < quantity) throw new Error(`No hay stock suficiente de ${product?.name || 'este producto'}. Disponible: ${product?.stock || 0}.`); } }
 renderCart();
 document.querySelectorAll('.payment-option').forEach((button) => button.addEventListener('click', () => { document.querySelector('.payment-option.active')?.classList.remove('active'); button.classList.add('active'); document.querySelector('#cardFields').hidden = button.dataset.payment !== 'card'; }));
-document.querySelector('#payButton').addEventListener('click', () => {
+document.querySelector('#payButton').addEventListener('click', async () => {
   const customer = JSON.parse(localStorage.getItem('ivbags-customer') || 'null');
   if (!customer) { alert('Inicia sesión antes de realizar la compra.'); window.location.href = 'index.html'; return; }
   const required = ['customerName', 'customerEmail', 'customerPhone'];
@@ -34,6 +35,7 @@ document.querySelector('#payButton').addEventListener('click', () => {
   const valid = required.every((id) => document.querySelector(`#${id}`).value.trim()) && shippingRequired;
   if (!cart.length) { alert('Añade una pieza al carrito antes de pagar.'); return; }
   if (!valid) { const missing = required.find((id) => !document.querySelector(`#${id}`).value.trim()) || (selectedShipping() === 'udea' ? 'customerName' : ['customerAddress', 'customerCity', 'customerBuilding', 'deliveryNotes'].find((id) => !document.querySelector(`#${id}`)?.value.trim())); document.querySelector(`#${missing}`)?.focus(); alert('Completa todos los datos de entrega.'); return; }
+  try { await validateCartStock(); } catch (error) { alert(error.message); return; }
   const number = `#IV-${Math.floor(1000 + Math.random() * 8999)}`;
   const payButton = document.querySelector('#payButton');
   payButton.disabled = true;
@@ -58,5 +60,5 @@ document.querySelector('#fakePayButton')?.addEventListener('click', async () => 
   const delivery = deliveryData();
   if (!delivery.name || !delivery.email || !delivery.phone || (delivery.type !== 'udea' && (!delivery.address || !delivery.city || !delivery.building || !delivery.notes))) { alert('Completa los datos de entrega.'); return; }
   const button = document.querySelector('#fakePayButton'); button.disabled = true;
-  try { const response = await fetch(`${apiBase}/orders`, { method: 'POST', headers: { 'Content-Type': 'application/json', ...(customer?.token ? { Authorization: `Bearer ${customer.token}` } : {}) }, body: JSON.stringify({ demo: true, items: cart, delivery, design: cart.map((item) => ({ ...item })) }) }); const order = await response.json(); if (!response.ok) throw new Error(order.error || 'No se pudo crear el pedido ficticio.'); document.querySelector('#orderNumber').textContent = `#${order.reference}`; document.querySelector('#confirmation').hidden = false; localStorage.removeItem(cartKey); cart = []; renderCart(); } catch (error) { alert(error.message); } finally { button.disabled = false; }
+  try { await validateCartStock(); const response = await fetch(`${apiBase}/orders`, { method: 'POST', headers: { 'Content-Type': 'application/json', ...(customer?.token ? { Authorization: `Bearer ${customer.token}` } : {}) }, body: JSON.stringify({ demo: true, items: cart, delivery, design: cart.map((item) => ({ ...item })) }) }); const order = await response.json(); if (!response.ok) throw new Error(order.error || 'No se pudo crear el pedido ficticio.'); document.querySelector('#orderNumber').textContent = `#${order.reference}`; document.querySelector('#confirmation').hidden = false; localStorage.removeItem(cartKey); cart = []; renderCart(); } catch (error) { alert(error.message); } finally { button.disabled = false; }
 });

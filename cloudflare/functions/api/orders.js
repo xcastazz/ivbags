@@ -33,7 +33,10 @@ export async function onRequestPost({ request, env }) {
     }
     const total = items.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 1), 0) + Math.max(0, Number(delivery.shippingFee || 0));
     const reference = `IV-${Date.now()}`;
-    for (const item of items) { if (item.productId) await env.DB.prepare('UPDATE products SET stock = MAX(stock - ?, 0) WHERE id = ? AND stock >= ?').bind(Number(item.quantity || 1), item.productId, Number(item.quantity || 1)).run(); }
+    const requestedStock = new Map();
+    items.forEach((item) => { if (item.productId) requestedStock.set(Number(item.productId), (requestedStock.get(Number(item.productId)) || 0) + Number(item.quantity || 1)); });
+    for (const [productId, quantity] of requestedStock) { const product = await env.DB.prepare('SELECT name, stock FROM products WHERE id = ? AND status = ?').bind(productId, 'available').first(); if (!product || Number(product.stock) < quantity) return json({ error: `No hay stock suficiente de ${product?.name || 'uno de los productos'}. Disponible: ${product?.stock || 0}.` }, 409); }
+    for (const [productId, quantity] of requestedStock) await env.DB.prepare('UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?').bind(quantity, productId, quantity).run();
     await env.DB.prepare('INSERT INTO orders (reference, user_id, total, status, payment_status, delivery_json, design_json, items_json, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)')
       .bind(reference, user.id || user.sub, total, demo ? 'demo' : 'pending', demo ? 'demo' : 'pending', JSON.stringify(delivery), JSON.stringify(design || items), JSON.stringify(items), new Date().toISOString()).run();
     return json({ reference, total, status: 'pending' }, 201);
