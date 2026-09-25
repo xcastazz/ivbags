@@ -60,6 +60,7 @@ function showAdmin() {
   loadAdminModule('js/admin/admin-data.js');
   loadAdminModule('js/admin/admin-product-editor.js');
   loadAdminModule('js/admin/admin-records.js');
+  loadAdminModule('js/admin/admin-invoice-clean.js');
   loadAdminModule('js/admin/admin-invoice-download.js');
   loadAdminModule('js/admin/admin-preview-exact.js');
   loadAdminModule('js/admin/admin-preview-clean.js');
