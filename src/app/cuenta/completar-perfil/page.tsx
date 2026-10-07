@@ -9,6 +9,7 @@ export default function CompleteProfilePage() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
   const [status, setStatus] = useState<string | null>(null);
 
   useEffect(() => {
@@ -26,12 +27,12 @@ export default function CompleteProfilePage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return setStatus("Tu sesion expiro. Inicia sesion de nuevo.");
 
-    const { error: authError } = await supabase.auth.updateUser({ data: { full_name: name, phone } });
+    const { error: authError } = await supabase.auth.updateUser({ password, data: { full_name: name, phone } });
     if (authError) return setStatus(authError.message);
     const { error: profileError } = await supabase.from("profiles").update({ full_name: name, phone }).eq("id", user.id);
     if (profileError) return setStatus(profileError.message);
     router.push("/");
   }
 
-  return <main className="auth-page"><Link className="brand" href="/"><span className="brand-mark">iV</span>bags</Link><section className="auth-panel"><p className="eyebrow">bienvenida al taller</p><h1>Cuéntanos de ti</h1><p>Tu correo ya esta verificado. Completa estos datos para seguir creando tu pieza.</p><form onSubmit={saveProfile}><label htmlFor="name">Nombre completo</label><input id="name" required value={name} onChange={(event) => setName(event.target.value)} placeholder="Tu nombre" /><label htmlFor="phone">Telefono</label><input id="phone" type="tel" required value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="300 000 0000" /><button className="button button-solid" type="submit">Guardar y continuar</button></form>{status && <p className="auth-status" role="status">{status}</p>}</section></main>;
+  return <main className="auth-page"><Link className="brand" href="/"><span className="brand-mark">iV</span>bags</Link><section className="auth-panel"><p className="eyebrow">bienvenida al taller</p><h1>Cuéntanos de ti</h1><p>Tu correo ya esta verificado. Crea tu clave y completa tus datos para seguir creando tu pieza.</p><form onSubmit={saveProfile}><label htmlFor="name">Nombre completo</label><input id="name" required value={name} onChange={(event) => setName(event.target.value)} placeholder="Tu nombre" /><label htmlFor="phone">Telefono</label><input id="phone" type="tel" required value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="300 000 0000" /><label htmlFor="new-password">Crea una contrasena</label><input id="new-password" type="password" minLength={8} required value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Minimo 8 caracteres" /><button className="button button-solid" type="submit">Guardar y continuar</button></form>{status && <p className="auth-status" role="status">{status}</p>}</section></main>;
 }

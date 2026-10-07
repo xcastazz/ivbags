@@ -23,15 +23,13 @@ export default function SignInPage() {
       return;
     }
 
-    setStatus("Creando tu cuenta...");
-    const { data, error } = await supabase.auth.signUp({
+    setStatus("Enviando tu bienvenida...");
+    const { error } = await supabase.auth.signInWithOtp({
       email,
-      password,
       options: { emailRedirectTo: `${window.location.origin}/auth/callback?next=/cuenta/completar-perfil` },
     });
     if (error) return setStatus(error.message);
-    if (data.session) return router.push("/cuenta/completar-perfil");
-    setStatus("Te enviamos un correo de bienvenida. Abre el enlace para verificar tu cuenta y completar tu perfil.");
+    setStatus("Te enviamos un correo de bienvenida. Abre el enlace para verificar tu cuenta, crear tu clave y completar tu perfil.");
   }
 
   return (
@@ -40,14 +38,13 @@ export default function SignInPage() {
       <section className="auth-panel">
         <p className="eyebrow">tu espacio en el taller</p>
         <h1>{mode === "register" ? "Crea tu cuenta" : "Inicia sesion"}</h1>
-        <p>{mode === "register" ? "Crea tu clave y recibe un correo de bienvenida para verificar tu cuenta." : "Ingresa con el correo y la clave que elegiste."}</p>
+        <p>{mode === "register" ? "Recibe un correo de bienvenida, verifica tu cuenta y despues crea tu clave." : "Ingresa con el correo y la clave que elegiste."}</p>
         <div className="auth-toggle" role="tablist" aria-label="Acceso a cuenta"><button type="button" className={mode === "register" ? "active" : ""} onClick={() => { setMode("register"); setStatus(null); }}>Crear cuenta</button><button type="button" className={mode === "login" ? "active" : ""} onClick={() => { setMode("login"); setStatus(null); }}>Entrar</button></div>
         <form onSubmit={submit}>
           <label htmlFor="email">Correo electronico</label>
           <input id="email" type="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="tu@correo.com" />
-          <label htmlFor="password">Contrasena</label>
-          <input id="password" type="password" minLength={8} required value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Minimo 8 caracteres" />
-          <button className="button button-solid" type="submit">{mode === "register" ? "Crear cuenta" : "Entrar"}</button>
+          {mode === "login" && <><label htmlFor="password">Contrasena</label><input id="password" type="password" minLength={8} required value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Minimo 8 caracteres" /></>}
+          <button className="button button-solid" type="submit">{mode === "register" ? "Enviar bienvenida" : "Entrar"}</button>
         </form>
         {status && <p className="auth-status" role="status">{status}</p>}
       </section>
