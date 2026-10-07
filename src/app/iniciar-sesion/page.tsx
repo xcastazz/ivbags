@@ -2,20 +2,36 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
 
 export default function SignInPage() {
+  const router = useRouter();
+  const [mode, setMode] = useState<"register" | "login">("register");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [status, setStatus] = useState<string | null>(null);
 
-  async function signIn(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setStatus("Enviando enlace seguro...");
-    const { error } = await createClient().auth.signInWithOtp({
+    const supabase = createClient();
+    if (mode === "login") {
+      setStatus("Iniciando sesion...");
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) return setStatus(error.message);
+      router.push("/cuenta/completar-perfil");
+      return;
+    }
+
+    setStatus("Creando tu cuenta...");
+    const { data, error } = await supabase.auth.signUp({
       email,
-      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+      password,
+      options: { emailRedirectTo: `${window.location.origin}/auth/callback?next=/cuenta/completar-perfil` },
     });
-    setStatus(error ? error.message : "Revisa tu correo para confirmar el inicio de sesion.");
+    if (error) return setStatus(error.message);
+    if (data.session) return router.push("/cuenta/completar-perfil");
+    setStatus("Te enviamos un correo de bienvenida. Abre el enlace para verificar tu cuenta y completar tu perfil.");
   }
 
   return (
@@ -23,12 +39,15 @@ export default function SignInPage() {
       <Link className="brand" href="/" aria-label="Volver a ivbags"><span className="brand-mark">iV</span>bags</Link>
       <section className="auth-panel">
         <p className="eyebrow">tu espacio en el taller</p>
-        <h1>Inicia sesion</h1>
-        <p>Te enviaremos un enlace de acceso y verificacion a tu correo. Sin contrasenas que recordar.</p>
-        <form onSubmit={signIn}>
+        <h1>{mode === "register" ? "Crea tu cuenta" : "Inicia sesion"}</h1>
+        <p>{mode === "register" ? "Crea tu clave y recibe un correo de bienvenida para verificar tu cuenta." : "Ingresa con el correo y la clave que elegiste."}</p>
+        <div className="auth-toggle" role="tablist" aria-label="Acceso a cuenta"><button type="button" className={mode === "register" ? "active" : ""} onClick={() => { setMode("register"); setStatus(null); }}>Crear cuenta</button><button type="button" className={mode === "login" ? "active" : ""} onClick={() => { setMode("login"); setStatus(null); }}>Entrar</button></div>
+        <form onSubmit={submit}>
           <label htmlFor="email">Correo electronico</label>
           <input id="email" type="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="tu@correo.com" />
-          <button className="button button-solid" type="submit">Enviar enlace</button>
+          <label htmlFor="password">Contrasena</label>
+          <input id="password" type="password" minLength={8} required value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Minimo 8 caracteres" />
+          <button className="button button-solid" type="submit">{mode === "register" ? "Crear cuenta" : "Entrar"}</button>
         </form>
         {status && <p className="auth-status" role="status">{status}</p>}
       </section>
