@@ -179,8 +179,8 @@ function Envelope({ step }: { step: Step }) {
         <rect className="env-body" x="6" y="22" width="108" height="58" rx="5" />
         <path className="env-letter" d="M20 12h80v52H20z" />
         <path className="env-lines" d="M30 26h60M30 34h48M30 42h54" />
-        <path className="env-front" d="M6 30l54 34 54-34v45a5 5 0 0 1-5 5H11a5 5 0 0 1-5-5z" />
-        <path className="env-flap" d="M8 22h104L60 58z" />
+        <path className="envs-front" d="M6 30l54 34 54-34v45a5 5 0 0 1-5 5H11a5 5 0 0 1-5-5z" />
+        <path className="envs-flap" d="M8 22h104L60 58z" />
       </svg>
       <span className="env-trail" />
     </div>

@@ -15,7 +15,7 @@ export function AdminNav() {
   const path = usePathname();
   return (
     <aside className="admin-sidebar">
-      <Link className="hlogo light" href="/admin" aria-label="Panel IV Bags"><Logo height={44} /></Link>
+      <Link className="hlogo light" href="/admin" aria-label="Panel IV Bags"><Logo height={44} tone="crema" /></Link>
       <p>Taller · admin</p>
       <nav aria-label="Admin">
         {LINKS.map(([href, label, Icon]) => <Link key={href} href={href} className={path === href ? "selected" : undefined} aria-current={path === href ? "page" : undefined} title={label}><Icon size={16} /><span>{label}</span></Link>)}

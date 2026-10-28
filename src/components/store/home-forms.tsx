@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import { toast } from "sonner";
 import { createClient, hasSupabase } from "@/lib/supabase/browser";
 import { waLink } from "@/lib/format";
+import { contactMessage, customIdea } from "@/lib/whatsapp";
 import { useAuth } from "@/components/auth/auth-provider";
 
 /** Cotización de bolso personalizado: queda en el admin (Solicitudes) y abre WhatsApp. */
@@ -26,7 +27,7 @@ export function IdeaForm({ whatsapp }: { whatsapp: string }) {
       if (error) { setSending(false); return toast.error("No pudimos guardar tu idea", { description: "Intenta de nuevo o escríbenos por WhatsApp." }); }
     }
     setSending(false);
-    toast.success("Recibimos tu idea", { description: "Te escribimos para cotizarla.", action: { label: "Abrir WhatsApp", onClick: () => window.open(waLink(whatsapp, `Hola, soy ${name}. Quiero cotizar un bolso personalizado: ${idea}`), "_blank", "noopener") } });
+    toast.success("Recibimos tu idea", { description: "Te escribimos para cotizarla.", action: { label: "Abrir WhatsApp", onClick: () => window.open(waLink(whatsapp, customIdea({ name, phone, email, idea: idea.trim() })), "_blank", "noopener") } });
     formEl.reset();
     setIdea("");
   }
@@ -63,7 +64,7 @@ export function ContactForm({ whatsapp }: { whatsapp: string }) {
       toast.success("Mensaje enviado", { description: "Te respondemos pronto." });
     } else {
       setSending(false);
-      window.open(waLink(whatsapp, `Hola, soy ${payload.name} (${payload.contact}). ${payload.message}`), "_blank", "noopener");
+      window.open(waLink(whatsapp, contactMessage(payload)), "_blank", "noopener");
     }
     formEl.reset();
   }

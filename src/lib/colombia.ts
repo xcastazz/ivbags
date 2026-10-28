@@ -47,7 +47,7 @@ export type Shipping = {
   recipientIsMe: boolean; recipientName: string; recipientPhone: string; save?: boolean;
 };
 
-/** "Calle 57A # 90 - 18" a partir de las partes de la dirección. */
+/** "Calle 10 # 25 - 30" a partir de las partes de la dirección. */
 export function formatStreet(s: Pick<Shipping, "streetType" | "streetNumber" | "crossNumber" | "plate">) {
   if (!s.streetNumber) return "";
   if (s.streetType === "Kilómetro" || s.streetType === "Vereda") return `${s.streetType} ${s.streetNumber}${s.crossNumber ? ` ${s.crossNumber}` : ""}`.trim();

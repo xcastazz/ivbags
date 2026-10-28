@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Archive, Check, MessageCircle, Trash2 } from "lucide-react";
 import { formatDate, waLink } from "@/lib/format";
 import { ORDER_STATUS, type OrderStatus } from "@/lib/types";
+import { requestReply } from "@/lib/whatsapp";
 import { db, Empty, LoadError, Loading, mutate, PageHead, useQuery } from "./kit";
 
 const when = (d: string) => formatDate(d, { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
@@ -31,7 +32,7 @@ export function RequestsAdmin() {
               <small>{[r.phone, r.email].filter(Boolean).join(" · ")}</small>
               <div className="row-actions wide">
                 <select aria-label="Estado" value={r.status} onChange={(e) => setStatus(r, e.target.value as OrderStatus)}>{Object.entries(ORDER_STATUS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select>
-                {r.phone && <a className="button solid" href={phoneLink(r.phone, `Hola ${r.name.split(" ")[0]}, te escribimos de IV Bags sobre tu idea: “${r.message}”`)} target="_blank" rel="noopener"><MessageCircle size={14} />Cotizar por WhatsApp</a>}
+                {r.phone && <a className="button solid" href={phoneLink(r.phone, requestReply(r))} target="_blank" rel="noopener"><MessageCircle size={14} />Cotizar por WhatsApp</a>}
               </div>
             </article>
           ))}</div>

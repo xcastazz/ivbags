@@ -24,6 +24,7 @@ export type SiteContent = {
   customIntro: string; customSteps: string[];
   whatsapp: string; instagram: string; email: string; city: string;
   shippingCents: number; paymentInstructions: string;
+  legalName: string; taxId: string; legalAddress: string; invoiceNote: string;
 };
 
 export type OrderStatus = "new" | "quoted" | "confirmed" | "in_production" | "shipped" | "completed" | "cancelled";

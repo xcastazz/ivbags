@@ -1,0 +1,38 @@
+/* IV Bags · paleta completa de la página web */
+:root{
+  /* Principales */
+  --deep-olive:#4F5537; /* Deep Olive */
+  --soft-olive:#C3C59B; /* Soft Olive */
+  --venetian-pink:#B98D84; /* Venetian Pink */
+  --moroccan-leather:#6D4546; /* Moroccan Leather */
+  --crema:#F5EDE1; /* Crema */
+  /* Fondos */
+  --fondo:#FBF5EC; /* Fondo general */
+  --rosa-suave:#EFDCD5; /* Rosa suave */
+  --mantequilla:#EFE4C9; /* Mantequilla */
+  --blanco-papel:#FFFDF8; /* Blanco papel */
+  --nota:#FFFDF6; /* Papel de la nota */
+  /* Texto */
+  --texto:#3F3C26; /* Texto */
+  /* Líneas */
+  --linea:#E3D5C1; /* Línea suave */
+  --borde-campo:#CDBBA3; /* Borde de campo */
+  --punteado:#D9CDB4; /* Punteado */
+  --borde-cinta:#E5DCC2; /* Borde de cinta */
+  --feston:#D3B2A8; /* Festón de la cabecera */
+  /* Sobre */
+  --sobre:#EADFC6; /* Sobre */
+  --sobre-frente:#F4ECD9; /* Frente del sobre */
+  /* Honguitos */
+  --hongo-contorno:#5B3F3A; /* Contorno de honguitos */
+  --hongo-tallo:#F6EEDC; /* Tallo de honguitos */
+  --hongo-rojo:#9E5A55; /* Sombrero rojo */
+  --hongo-rosa:#D9B8AE; /* Sombrero rosa */
+  --hongo-naranja:#C7905E; /* Sombrero naranja */
+  /* Transparencias */
+  --sombra:rgba(63, 60, 38, .16);
+  --sombra-suave:rgba(63, 60, 38, .12);
+  --velo:rgba(63, 60, 38, .45);
+  --boton-sobre-foto:rgba(251, 245, 236, .9);
+  --linea-clara:rgba(251, 245, 236, .2);
+}

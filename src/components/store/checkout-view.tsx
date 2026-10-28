@@ -3,6 +3,8 @@
 import { FormEvent, useEffect, useState } from "react";
 import { formatAddress, formatStreet, type Shipping } from "@/lib/colombia";
 import { EMPTY_SHIPPING, ShippingForm } from "./shipping-form";
+import { orderToShop } from "@/lib/whatsapp";
+import { onlinePaymentsEnabled, startOnlinePayment } from "@/lib/pay";
 import Link from "next/link";
 import { toast } from "sonner";
 import { createClient, hasSupabase } from "@/lib/supabase/browser";
@@ -13,7 +15,7 @@ import { Star } from "./icons";
 import { useAuth } from "@/components/auth/auth-provider";
 import { SignInForm } from "@/components/auth/sign-in-form";
 
-type Done = { number: number | null; total: number; name: string; address: string };
+type Done = { number: number | null; total: number; name: string; address: string; message: string; payError?: string };
 const LOCAL_KEY = "iv-shipping";
 
 export function CheckoutView({ content }: { content: SiteContent }) {
@@ -23,6 +25,9 @@ export function CheckoutView({ content }: { content: SiteContent }) {
   const [done, setDone] = useState<Done | null>(null);
   const [ship, setShip] = useState<Shipping>(EMPTY_SHIPPING);
   const [notes, setNotes] = useState("");
+  const online = onlinePaymentsEnabled();
+  const [retrying, setRetrying] = useState(false);
+  const payLabel = "Pago en línea (Wompi)";
   const shipping = content.shippingCents;
 
   // Rellena con la dirección guardada (cuenta o este navegador) y los datos del perfil.
@@ -39,12 +44,12 @@ export function CheckoutView({ content }: { content: SiteContent }) {
   async function confirm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!cart.length) return toast.error("Tu bolsa está vacía");
+    if (!online) return toast.error("Los pagos en línea no están disponibles", { description: "Escríbenos por WhatsApp para terminar tu compra." });
     if (!ship.department || !ship.city) return toast.error("Elige el departamento y la ciudad");
     const street = formatStreet(ship);
     const full: Shipping = { ...ship, street, name: ship.name.trim(), email: ship.email.trim() };
     const address = formatAddress(full);
     const get = (k: "name") => full[k];
-    const summary = cart.map((l) => `• ${l.qty} × ${l.name}${lineDetail(l) ? ` (${lineDetail(l)})` : ""}`).join("\n");
     setSending(true);
     if (full.save) { try { localStorage.setItem(LOCAL_KEY, JSON.stringify({ ...full, save: undefined })); } catch {} }
 
@@ -62,13 +67,13 @@ export function CheckoutView({ content }: { content: SiteContent }) {
       const items = lines.map((l) => ({ product_id: l.productId, quantity: l.qty, customization: { ...l.sel, ...l.extra } }));
       try {
         const db = createClient();
-        let { data, error } = await db.rpc("place_order", { p_shipping: { ...full, address }, p_notes: notes.trim() || null, p_payment: "Transferencia o Nequi", p_items: items });
+        let { data, error } = await db.rpc("place_order", { p_shipping: { ...full, address }, p_notes: notes.trim() || null, p_payment: payLabel, p_items: items });
         // Si la base aún no tiene la migración 005, usa la función anterior con la dirección en una línea.
         if (error && (error.code === "PGRST202" || /place_order/.test(error.message))) {
           ({ data, error } = await db.rpc("create_order", {
             p_name: full.name, p_email: full.email, p_phone: full.phone, p_city: full.city, p_address: address,
             p_notes: [notes.trim(), `Documento: ${full.idType} ${full.idNumber}`, !full.recipientIsMe && `Recibe: ${full.recipientName} (${full.recipientPhone})`, full.reference && `Indicaciones: ${full.reference}`].filter(Boolean).join(" · "),
-            p_payment: "Transferencia o Nequi", p_items: items,
+            p_payment: payLabel, p_items: items,
           }));
         }
         if (error) throw error;
@@ -86,15 +91,28 @@ export function CheckoutView({ content }: { content: SiteContent }) {
     }
     setSending(false);
     clear();
-    setDone({ number, total, name: get("name"), address });
+    const message = orderToShop({
+      number, subtotalCents: subtotal, shippingCents: total - subtotal > 0 ? total - subtotal : shipping, totalCents: total,
+      lines: cart.map((l) => ({ name: l.name, qty: l.qty, unitCents: l.priceCents, options: { ...l.sel, ...l.extra } })),
+      shipping: { ...full, address }, payment: payLabel, notes: notes.trim() || undefined,
+    });
+    setDone({ number, total, name: get("name"), address, message });
     window.scrollTo({ top: 0, behavior: "smooth" });
-    toast.success(number ? `¡Gracias! Pedido #${number} recibido` : "¡Gracias! Tu pedido está listo para enviar");
-    if (!number) window.open(waLink(content.whatsapp, `Hola, soy ${get("name")}. Quiero hacer este pedido:\n${summary}\nEnvío a: ${address}`), "_blank", "noopener");
+    if (!number) { window.open(waLink(content.whatsapp, message), "_blank", "noopener"); return; }
+    const r = await startOnlinePayment(number);
+    if (r.ok) return; // la persona sigue en Wompi
+    setDone((d) => d && { ...d, payError: r.error });
+  }
+
+  async function retry(number: number) {
+    setRetrying(true);
+    const r = await startOnlinePayment(number);
+    if (!r.ok) { setRetrying(false); toast.error("No pudimos abrir el pago", { description: r.error }); }
   }
 
   if (guest && !done) return (
     <main className="checkout checkout-gate">
-      <div className="auth-panel inline"><SignInForm onSignedIn={(needsProfile) => { toast.success("¡Listo! Ya puedes confirmar tu pedido"); if (needsProfile) toast("Completa tus datos después desde tu cuenta"); }} /></div>
+      <div className="auth-panel embedded"><SignInForm onSignedIn={(needsProfile) => { toast.success("¡Listo! Ya puedes confirmar tu pedido"); if (needsProfile) toast("Completa tus datos después desde tu cuenta"); }} /></div>
       <aside className="order-box">
         <div className="d h-sm">Tu pedido</div>
         {cart.map((line) => <div className="order-line" key={line.key}>{line.image ? <img src={line.image} alt={line.name} /> : <span className="cart-thumb" />}<div><b>{line.name}</b><small>Cantidad {line.qty}</small></div><span>{money(line.priceCents * line.qty)}</span></div>)}
@@ -104,28 +122,35 @@ export function CheckoutView({ content }: { content: SiteContent }) {
   );
 
   if (done) return (
-    <div className="checkout done">
-      <Star size={44} className="twinkle" />
-      <h1 className="d h-lg">¡Gracias, {done.name.split(" ")[0]}!</h1>
-      {done.number && <p className="lb wine">Pedido #{done.number} · {money(done.total)}</p>}
-      <p className="hint">Lo enviaremos a: <b>{done.address}</b></p>
-      <p className="long">{content.paymentInstructions}</p>
-      <div className="actions">
-        <a className="btn btn-solid" href={waLink(content.whatsapp, `Hola, acabo de hacer el pedido #${done.number ?? ""} y quiero coordinar el pago.`)} target="_blank" rel="noopener">Coordinar el pago por WhatsApp</a>
-        <Link className="btn btn-line" href="/cuenta">Ver mis pedidos</Link>
+    <main className="checkout done">
+      <div className="pay-card sewn">
+        <Star size={40} className="twinkle" />
+        <div className="lb pink-lb">{done.number ? `Pedido #${done.number} · ${money(done.total)}` : "Pedido listo"}</div>
+        <h1 className="d h-lg">{done.payError ? <>Tu pedido <i>quedó guardado</i></> : <>¡Gracias, <i>{done.name.split(" ")[0]}</i>!</>}</h1>
+        {!done.payError && done.number && <p className="pay-going"><span className="pay-dot" aria-hidden />Te estamos llevando a la página segura de Wompi para pagar…</p>}
+        {done.payError && <p className="long">No pudimos abrir el pago en línea: {done.payError} Puedes intentarlo de nuevo ahora o pagarlo más tarde desde tu cuenta.</p>}
+        <div className="pay-address"><span className="lb">Lo enviaremos a</span><b>{done.address}</b></div>
+        <div className="actions">
+          {done.number && done.payError && <button className="btn btn-solid" onClick={() => retry(done.number!)} disabled={retrying}>{retrying ? "Abriendo el pago..." : `Pagar ${money(done.total)}`}</button>}
+          <Link className="btn btn-line" href="/cuenta">Ver mis pedidos</Link>
+          <Link className="btn btn-line" href="/">Volver al inicio</Link>
+        </div>
       </div>
-    </div>
+    </main>
   );
 
   return (
     <main className="checkout">
+      <Link className="back-link" href="/tienda">← Seguir comprando</Link>
       <div><div className="lb pink">Ya casi es tuyo</div><h1 className="d h-lg">Finalizar compra</h1></div>
       <form className="checkout-cols" onSubmit={confirm}>
         <div className="checkout-form">
           <ShippingForm value={ship} onChange={setShip} />
           <div className="fgroup"><label className="lb wine" htmlFor="s-notes">Notas para el taller (opcional)</label><textarea id="s-notes" className="field" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Ej: es un regalo, no incluyas el precio" rows={2} maxLength={500} /></div>
           <div className="lb wine spaced">Cómo pagas</div>
-          <div className="note">{content.paymentInstructions}</div>
+          {online
+            ? <div className="pay-opt" aria-checked="true" role="note"><span className="radio" /><span><b>Pago en línea</b><small>Tarjeta, PSE, Nequi, Botón Bancolombia o efectivo. Pago seguro con Wompi.</small></span></div>
+            : <div className="note">Los pagos en línea no están disponibles en este momento. Escríbenos por WhatsApp para terminar tu compra.</div>}
           <label className="check"><input type="checkbox" required /><span>Acepto los <Link className="inline-link" href="/legal/terminos" target="_blank">términos y condiciones</Link> y la <Link className="inline-link" href="/legal/privacidad" target="_blank">política de privacidad</Link>.</span></label>
         </div>
         <aside className="order-box">
@@ -137,7 +162,8 @@ export function CheckoutView({ content }: { content: SiteContent }) {
             <div className="row-between"><span>Envío</span><span>{shipping ? money(shipping) : "Se coordina por WhatsApp"}</span></div>
             <div className="row-between strong"><span>Total</span><span>{money(subtotal + shipping)}</span></div>
           </div>
-          <button className="btn btn-solid tall" type="submit" disabled={sending || !cart.length}>{sending ? "Creando pedido..." : "Confirmar pedido"}</button>
+          <button className="btn btn-solid tall" type="submit" disabled={sending || !cart.length || !online}>{sending ? <><span className="spinner" aria-hidden />Preparando el pago</> : `Pagar ${money(subtotal + shipping)}`}</button>
+          {online && <p className="secure-note">🔒 Pagas en la página segura de Wompi (Bancolombia). IV Bags nunca ve los datos de tu tarjeta.</p>}
         </aside>
       </form>
     </main>

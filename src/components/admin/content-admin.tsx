@@ -27,6 +27,7 @@ function ContentForm({ initial }: { initial: SiteContent }) {
       customIntro: s("customIntro"), customSteps: [s("step1"), s("step2"), s("step3")].filter(Boolean),
       whatsapp: s("whatsapp").replace(/\D/g, ""), instagram: s("instagram").replace(/^@/, ""), email: s("email"), city: s("city"),
       shippingCents: centsFromCop(f.get("shipping")), paymentInstructions: s("paymentInstructions"),
+      legalName: s("legalName"), taxId: s("taxId"), legalAddress: s("legalAddress"), invoiceNote: s("invoiceNote"),
     };
     setSaving(true);
     await mutate(db().from("site_content").upsert({ key: "site", value, updated_at: new Date().toISOString() }), "Contenido publicado", ["content"]);
@@ -68,6 +69,11 @@ function ContentForm({ initial }: { initial: SiteContent }) {
           <div className="form-pair"><label>Correo<input name="email" type="email" defaultValue={initial.email} /></label><label>Ciudad<input name="city" defaultValue={initial.city} /></label></div>
           <label>Costo de envío (COP) <span className="soft">0 = se coordina por WhatsApp</span><input name="shipping" inputMode="numeric" defaultValue={copFromCents(initial.shippingCents)} /></label>
           <label>Instrucciones de pago<textarea name="paymentInstructions" rows={3} defaultValue={initial.paymentInstructions} /></label>
+        </fieldset>
+        <fieldset className="admin-panel product-form"><legend>Datos para facturas</legend>
+          <div className="form-pair"><label>Razón social o nombre<input name="legalName" defaultValue={initial.legalName} /></label><label>NIT o cédula <span className="soft">(opcional)</span><input name="taxId" defaultValue={initial.taxId} placeholder="900.000.000-0" /></label></div>
+          <label>Dirección del negocio<input name="legalAddress" defaultValue={initial.legalAddress} /></label>
+          <label>Nota de agradecimiento<textarea name="invoiceNote" rows={2} defaultValue={initial.invoiceNote} /></label>
         </fieldset>
       </div>
     </form>

@@ -1,12 +1,12 @@
-import { getContent } from "@/lib/data";
+import { getContent, getProducts } from "@/lib/data";
 import { Header } from "@/components/store/header";
 import { Footer } from "@/components/store/footer";
 
 export default async function StoreLayout({ children }: LayoutProps<"/">) {
-  const content = await getContent();
+  const [content, products] = await Promise.all([getContent(), getProducts()]);
   return (
     <div className="store">
-      <Header topbar={content.topbar} />
+      <Header topbar={content.topbar} products={products} />
       <main className="store-main">{children}</main>
       <Footer content={content} />
     </div>

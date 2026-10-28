@@ -43,11 +43,11 @@ export function ShippingForm({ value, onChange }: { value: Shipping; onChange: (
         </div>
         <div className="addr-row">
           <Field label="Tipo de vía" htmlFor="s-type"><select id="s-type" className="field" value={value.streetType} onChange={(e) => set("streetType", e.target.value)}>{STREET_TYPES.map((t) => <option key={t}>{t}</option>)}</select></Field>
-          <Field label="Número" htmlFor="s-n1"><input id="s-n1" className="field" required value={value.streetNumber} onChange={(e) => set("streetNumber", e.target.value)} placeholder="57A" maxLength={12} /></Field>
+          <Field label="Número" htmlFor="s-n1"><input id="s-n1" className="field" required value={value.streetNumber} onChange={(e) => set("streetNumber", e.target.value)} placeholder="10" maxLength={12} /></Field>
           {needsPlate && <><span className="addr-sym" aria-hidden>#</span>
-            <Field label="Cruce" htmlFor="s-n2"><input id="s-n2" className="field" required value={value.crossNumber} onChange={(e) => set("crossNumber", e.target.value)} placeholder="90" maxLength={12} /></Field>
+            <Field label="Cruce" htmlFor="s-n2"><input id="s-n2" className="field" required value={value.crossNumber} onChange={(e) => set("crossNumber", e.target.value)} placeholder="25" maxLength={12} /></Field>
             <span className="addr-sym" aria-hidden>–</span>
-            <Field label="Placa" htmlFor="s-n3"><input id="s-n3" className="field" required value={value.plate} onChange={(e) => set("plate", e.target.value)} placeholder="18" maxLength={8} /></Field></>}
+            <Field label="Placa" htmlFor="s-n3"><input id="s-n3" className="field" required value={value.plate} onChange={(e) => set("plate", e.target.value)} placeholder="30" maxLength={8} /></Field></>}
         </div>
         <div className="form-cols">
           <Field label="Barrio" htmlFor="s-hood"><input id="s-hood" className="field" required value={value.neighborhood} onChange={(e) => set("neighborhood", e.target.value)} placeholder="Ej: Laureles" /></Field>

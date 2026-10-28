@@ -26,7 +26,7 @@ export function CartDrawer() {
             <Drawer.Title className="d cart-title">Tu bolsa</Drawer.Title>
             <Drawer.Close className="round-btn" aria-label="Cerrar"><Close /></Drawer.Close>
           </div>
-          <div className="lace" aria-hidden />
+          <div className="lace-pink" aria-hidden />
           <div className="cart-body">
             {cart.length === 0 && <div className="cart-empty"><Star size={40} className="twinkle" /><div className="d">Tu bolsa está vacía</div><p>Agrega una pieza y aparecerá aquí.</p><Drawer.Close asChild><Link className="btn btn-line" href="/tienda">Ir a la tienda</Link></Drawer.Close></div>}
             {cart.map((line) => (

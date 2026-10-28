@@ -5,6 +5,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import type { Product } from "@/lib/types";
 import { availability, catHref, money, waLink } from "@/lib/format";
+import { productQuestion } from "@/lib/whatsapp";
 import { useStore } from "./store-provider";
 import { useAuth } from "@/components/auth/auth-provider";
 import { Star } from "./icons";
@@ -26,7 +27,9 @@ export function ProductView({ p, related, whatsapp }: { p: Product; related: Pro
   const info = [
     p.details && { t: "Detalles", d: p.details },
     { t: "Cuidados", d: "Lava a mano con agua fría, por el revés y sin blanqueador. Seca a la sombra." },
-    { t: "Envíos y tiempos", d: "Si está listo, lo despachamos 1 día hábil después de tu pago. Si es por encargo, lo tenemos listo en 2 semanas. Las piezas personalizadas no tienen cambio ni devolución." },
+    { t: "Inspiración", d: "Cada pieza nace de la naturaleza, los recuerdos y las cosas pequeñas que nos hacen felices. La pintamos y bordamos a mano, así que ninguna es exactamente igual a otra." },
+    { t: "Envíos y tiempos", d: "Si está listo, lo despachamos 1 día hábil después de tu pago. Si es por encargo, lo tenemos listo en 2 semanas." },
+    { t: "Cambios y devoluciones", d: "Puedes pedir cambio dentro de los 5 días siguientes a recibir tu pedido, con la pieza sin uso y en su empaque. Las piezas personalizadas no tienen cambio ni devolución. Escríbenos por WhatsApp para gestionarlo." },
   ].filter(Boolean) as { t: string; d: string }[];
 
   function addCurrent() {
@@ -39,7 +42,7 @@ export function ProductView({ p, related, whatsapp }: { p: Product; related: Pro
   return (
     <div className="product-page">
       <div className="product-wrap">
-        <nav className="crumbs" aria-label="Ruta"><Link href="/tienda">Tienda</Link><span>/</span><Link href={catHref(p.category)}>{p.category}</Link><span>/</span><span>{p.name}</span></nav>
+        <nav className="crumbs" aria-label="Ruta"><Link href="/">Inicio</Link><span>/</span><Link href="/tienda">Tienda</Link><span>/</span><Link href={catHref(p.category)}>{p.category}</Link><span>/</span><span>{p.name}</span></nav>
         <div className="product-cols">
           <div className="gallery">
             <div className="gallery-main">
@@ -71,12 +74,16 @@ export function ProductView({ p, related, whatsapp }: { p: Product; related: Pro
             <div className="fgroup"><span className="lb wine">Cantidad</span><Stepper value={qty} onChange={setQty} label="unidades" /></div>
             <button className="btn btn-solid tall" onClick={addCurrent}>Agregar a la bolsa · {money(p.price_cents * qty)}</button>
             {guest && <p className="hint center">Entra con tu correo para comprar. Solo toma un minuto.</p>}
-            <a className="btn btn-line" href={waLink(whatsapp, `Hola, tengo una pregunta sobre ${p.name}`)} target="_blank" rel="noopener">Pregúntanos por WhatsApp</a>
+            <a className="btn btn-line" href={waLink(whatsapp, productQuestion({
+              name: p.name, priceCents: p.price_cents, category: p.category, available: av.label, qty,
+              options: { ...Object.fromEntries(p.options.filter((o) => sel[o.key]).map((o) => [o.label, sel[o.key]])), ...(p.is_pet ? { petName: petName.trim(), pets: String(pets) } : {}) },
+              url: `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/producto/${p.slug}`,
+            }))} target="_blank" rel="noopener">Pregúntanos por WhatsApp</a>
             <div className="accs">
               {info.map((it, i) => (
                 <div className={`acc tone-${i}`} key={it.t}>
                   <button onClick={() => setAcc(acc === i ? -1 : i)} aria-expanded={acc === i}>{it.t}<span className="acc-sign" aria-hidden>+</span></button>
-                  <div className="collapse" data-open={acc === i}><div><p>{it.d}</p></div></div>
+                  <div className="reveal" data-open={acc === i}><div><p>{it.d}</p></div></div>
                 </div>
               ))}
             </div>
@@ -84,7 +91,7 @@ export function ProductView({ p, related, whatsapp }: { p: Product; related: Pro
         </div>
       </div>
       {related.length > 0 && <div className="related">
-        <div className="lace lace-olive" aria-hidden />
+        <div className="lace-olive" aria-hidden />
         <div className="related-inner">
           <h2 className="d h-md">También te puede gustar</h2>
           <div className="rgrid">{related.map((r) => <Link key={r.id} href={`/producto/${r.slug}`} className="rcard"><span className="swap">{r.images[0] && <img src={r.images[0]} alt={r.name} />}</span><span className="d">{r.name}</span><span className="price">{money(r.price_cents)}</span></Link>)}</div>

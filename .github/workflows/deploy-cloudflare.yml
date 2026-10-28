@@ -23,6 +23,7 @@ jobs:
       NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
       NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+      NEXT_PUBLIC_WOMPI_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_WOMPI_PUBLIC_KEY }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
