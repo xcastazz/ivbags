@@ -24,6 +24,8 @@ export function ProductView({ p, related, whatsapp }: { p: Product; related: Pro
   const [petName, setPetName] = useState("");
   const [acc, setAcc] = useState(0);
   const av = availability(p);
+  const media = [...p.images.map((src) => ({ src, video: false })), ...(p.videos ?? []).map((src) => ({ src, video: true }))];
+  const cur = media[imgIdx];
   const info = [
     p.details && { t: "Detalles", d: p.details },
     { t: "Cuidados", d: "Lava a mano con agua fría, por el revés y sin blanqueador. Seca a la sombra." },
@@ -47,12 +49,12 @@ export function ProductView({ p, related, whatsapp }: { p: Product; related: Pro
           <div className="gallery">
             <div className="gallery-main">
               <div className="swap tilt">
-                {p.images[imgIdx] ? <img key={imgIdx} className="fade-in" src={p.images[imgIdx]} alt={p.name} /> : <span className="placeholder"><Star size={40} /><span className="lb">Foto pronto</span></span>}
+                {cur?.video ? <video key={imgIdx} className="fade-in" src={cur.src} autoPlay muted loop playsInline controls aria-label={`Video de ${p.name}`} /> : cur ? <img key={imgIdx} className="fade-in" src={cur.src} alt={p.name} /> : <span className="placeholder"><Star size={40} /><span className="lb">Foto pronto</span></span>}
                 {p.tag && <span className="h tag big">{p.tag}</span>}
               </div>
               <Star size={40} className="gallery-star twinkle" />
             </div>
-            {p.images.length > 1 && <div className="thumbs">{p.images.map((src, i) => <button key={src} onClick={() => setImgIdx(i)} aria-label={`Ver foto ${i + 1}`} aria-pressed={i === imgIdx}><img src={src} alt="" /></button>)}</div>}
+            {media.length > 1 && <div className="thumbs">{media.map((m, i) => <button key={m.src} onClick={() => setImgIdx(i)} aria-label={m.video ? `Ver video ${i + 1 - p.images.length}` : `Ver foto ${i + 1}`} aria-pressed={i === imgIdx} className={m.video ? "thumb-video" : undefined}>{m.video ? <video src={`${m.src}#t=0.5`} muted playsInline preload="metadata" /> : <img src={m.src} alt="" />}</button>)}</div>}
           </div>
           <div className="buy">
             <div className="lb pink">{p.category}</div>

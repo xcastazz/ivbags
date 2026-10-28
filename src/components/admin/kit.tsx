@@ -2,7 +2,7 @@
 
 import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { ImagePlus, X } from "lucide-react";
+import { ImagePlus, Video, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/browser";
 import { refreshStore } from "@/app/actions";
 
@@ -144,3 +144,39 @@ export function ImageList({ value, onChange, folder, max = 6 }: { value: string[
 
 export const copFromCents = (cents: number) => String(Math.round(cents / 100));
 export const centsFromCop = (cop: FormDataEntryValue | null) => Math.max(0, Math.round(Number(String(cop ?? "0").replace(/[^\d]/g, "")) * 100));
+
+const VIDEO_MAX_MB = 50;
+
+/** Lista de videos: subir (al bucket "videos"), ver y quitar. */
+export function VideoList({ value, onChange, folder, max = 3 }: { value: string[]; onChange: (v: string[]) => void; folder: string; max?: number }) {
+  const [busy, setBusy] = useState<string | null>(null);
+  async function onFile(file: File | undefined) {
+    if (!file) return;
+    if (!file.type.startsWith("video/")) return toast.error("Ese archivo no es un video");
+    if (file.size > VIDEO_MAX_MB * 1024 * 1024) return toast.error(`El video pesa más de ${VIDEO_MAX_MB} MB`, { description: "Súbelo más corto o expórtalo en 720p." });
+    const ext = (file.name.split(".").pop() || "mp4").toLowerCase();
+    const path = `${folder}/${crypto.randomUUID()}.${ext === "mov" ? "mov" : ext}`;
+    setBusy(`Subiendo ${(file.size / 1024 / 1024).toFixed(1)} MB...`);
+    const client = db();
+    try {
+      const { error } = await withTimeout(client.storage.from("videos").upload(path, file, { contentType: file.type, cacheControl: "31536000" }), 5 * 60000);
+      if (error) throw error;
+      onChange([...value, client.storage.from("videos").getPublicUrl(path).data.publicUrl]);
+    } catch (e) {
+      toast.error("No se pudo subir el video", { description: explainDbError(e as DbError) });
+    } finally {
+      setBusy(null);
+    }
+  }
+  return (
+    <div className="image-list">
+      {value.map((src) => (
+        <div className="image-tile" key={src}>
+          <video src={`${src}#t=0.5`} muted playsInline preload="metadata" />
+          <div className="tile-actions"><button type="button" aria-label="Quitar video" onClick={() => onChange(value.filter((s) => s !== src))}><X size={14} /></button></div>
+        </div>
+      ))}
+      {value.length < max && <label className="image-add"><input type="file" accept="video/mp4,video/webm,video/quicktime" className="sr-only" onChange={(e) => { onFile(e.target.files?.[0]); e.target.value = ""; }} disabled={!!busy} /><Video size={20} />{busy ?? `Subir video (hasta ${VIDEO_MAX_MB} MB)`}</label>}
+    </div>
+  );
+}

@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import { cacheLife, cacheTag } from "next/cache";
 import { SUPABASE_URL } from "./supabase/url";
 import { DEFAULT_CONTENT, DEFAULT_PRODUCTS } from "./defaults";
-import type { Post, Product, SiteContent, StoreVideo } from "./types";
+import { splitMedia, type Post, type Product, type SiteContent, type StoreVideo } from "./types";
 
 /** Lecturas públicas de la tienda, cacheadas. El admin las refresca con `refreshStore`. */
 function publicClient() {
@@ -23,7 +23,7 @@ export async function getProducts(): Promise<Product[]> {
   if (!db) return DEFAULT_PRODUCTS;
   const { data, error } = await db.from("products").select(PRODUCT_FIELDS).eq("active", true).order("sort_order").order("created_at", { ascending: false });
   if (error) { console.error("getProducts", error.message); return []; }
-  return (data ?? []) as Product[];
+  return ((data ?? []) as Product[]).map(splitMedia);
 }
 
 export async function getProduct(slug: string) {

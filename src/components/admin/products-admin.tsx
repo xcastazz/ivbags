@@ -3,9 +3,9 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Drawer } from "vaul";
 import { Eye, EyeOff, Pencil, Plus, Star, Trash2 } from "lucide-react";
-import { CATEGORIES, type Product, type ProductOption } from "@/lib/types";
+import { CATEGORIES, isVideoUrl, type Product, type ProductOption } from "@/lib/types";
 import { money, slugify } from "@/lib/format";
-import { centsFromCop, copFromCents, db, Empty, ImageList, LoadError, Loading, mutate, PageHead, useQuery } from "./kit";
+import { centsFromCop, copFromCents, db, Empty, ImageList, LoadError, Loading, mutate, PageHead, useQuery, VideoList } from "./kit";
 
 const EMPTY: Product = { id: "", slug: "", name: "", category: "Bolsos", tag: "", description: "", details: "", price_cents: 0, images: [], options: [], made_to_order: false, inventory_count: 0, featured: false, is_pet: false, active: true, sort_order: 0 };
 
@@ -47,7 +47,7 @@ export function ProductsAdmin() {
           <div className="admin-table">
             {shown.map((p) => (
               <div className={`admin-row${p.active ? "" : " muted"}`} key={p.id}>
-                {p.images[0] ? <img className="row-thumb" src={p.images[0]} alt="" /> : <span className="row-thumb" />}
+                {p.images.find((u) => !isVideoUrl(u)) ? <img className="row-thumb" src={p.images.find((u) => !isVideoUrl(u))} alt="" /> : <span className="row-thumb" />}
                 <div className="row-main"><strong>{p.name}</strong><small>{p.category} · {p.made_to_order ? "Por encargo" : `${p.inventory_count} disponibles`}{p.active ? "" : " · Oculto"}</small></div>
                 <b className="row-price">{money(p.price_cents)}</b>
                 <div className="row-actions">
@@ -68,9 +68,10 @@ export function ProductsAdmin() {
 
 function ProductEditor({ product, onClose, onSaved }: { product: Product | null; onClose: () => void; onSaved: () => void }) {
   const [images, setImages] = useState<string[]>([]);
+  const [videos, setVideos] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   // eslint-disable-next-line react-hooks/set-state-in-effect -- reset gallery when another product opens
-  useEffect(() => { setImages(product?.images ?? []); }, [product]);
+  useEffect(() => { const all = product?.images ?? []; setImages(all.filter((u) => !isVideoUrl(u))); setVideos(all.filter(isVideoUrl)); }, [product]);
 
   async function save(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -83,7 +84,7 @@ function ProductEditor({ product, onClose, onSaved }: { product: Product | null;
       price_cents: centsFromCop(f.get("price")), inventory_count: Math.max(0, Number(f.get("inventory")) || 0),
       made_to_order: f.get("made_to_order") === "on", featured: f.get("featured") === "on", is_pet: f.get("is_pet") === "on", active: f.get("active") === "on",
       sort_order: Number(f.get("sort_order")) || 0, description: String(f.get("description")).trim() || null, details: String(f.get("details")).trim() || null,
-      options: textToOptions(String(f.get("options"))), images, image_url: images[0] ?? null,
+      options: textToOptions(String(f.get("options"))), images: [...images, ...videos], image_url: images[0] ?? null,
     };
     setSaving(true);
     const query = product.id ? db().from("products").update(row).eq("id", product.id) : db().from("products").insert(row);
@@ -101,6 +102,7 @@ function ProductEditor({ product, onClose, onSaved }: { product: Product | null;
           {product && (
             <form key={product.id || "new"} className="product-form" onSubmit={save}>
               <label>Fotos<ImageList value={images} onChange={setImages} folder="products" /></label>
+              <label>Videos <span className="soft">(opcional: se ven en la ficha del producto y se reproducen solos, sin sonido)</span><VideoList value={videos} onChange={setVideos} folder="products" /></label>
               <label>Nombre<input name="name" required defaultValue={product.name} placeholder="Tote Pensamiento" /></label>
               <div className="form-pair">
                 <label>Categoría<select name="category" defaultValue={product.category}>{CATEGORIES.map((c) => <option key={c}>{c}</option>)}</select></label>

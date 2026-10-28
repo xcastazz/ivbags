@@ -1002,3 +1002,8 @@ video.row-thumb { object-fit: cover }
   .icon-btn.acct-btn span { display: none }
   .icon-btn.acct-btn:hover { background: transparent; color: var(--deep-olive) }
 }
+.swap video { width: 100%; height: 100%; object-fit: cover; display: block; background: #000 }
+.thumbs button video { width: 100%; height: 100%; object-fit: cover; pointer-events: none }
+.thumbs .thumb-video { position: relative }
+.thumbs .thumb-video::after { content: "▶"; position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 18px; text-shadow: 0 1px 6px #0008 }
+.image-tile video { width: 100%; height: 100%; object-fit: cover; display: block }

@@ -8,7 +8,16 @@ export type Product = {
   description: string | null; details: string | null; price_cents: number;
   images: string[]; options: ProductOption[]; made_to_order: boolean; inventory_count: number;
   featured: boolean; is_pet: boolean; active: boolean; sort_order: number;
+  /** Videos del producto. En la base viven junto a las fotos (columna images) y se separan al leer. */
+  videos?: string[];
 };
+
+export const isVideoUrl = (url: string) => /\.(mp4|webm|mov|m4v)($|\?)/i.test(url);
+
+/** Separa fotos y videos guardados en la misma lista. */
+export function splitMedia<T extends { images: string[] }>(p: T): T & { videos: string[] } {
+  return { ...p, images: p.images.filter((u) => !isVideoUrl(u)), videos: p.images.filter(isVideoUrl) };
+}
 
 export type Post = {
   id: string; kind: string; title: string; place: string | null; event_date: string | null;
