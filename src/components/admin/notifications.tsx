@@ -3,12 +3,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Bell, CircleDollarSign, CircleAlert, Inbox, Mail, ShoppingBag, UserPlus } from "lucide-react";
+import { Bell, CircleDollarSign, CircleAlert, Inbox, Mail, MessageSquareHeart, ShoppingBag, UserPlus } from "lucide-react";
 import { db } from "./kit";
 
 type Notice = { id: string; kind: string; title: string; body: string | null; href: string | null; read_at: string | null; created_at: string };
 
-const ICONS = { order: ShoppingBag, payment: CircleDollarSign, payment_failed: CircleAlert, custom_request: Inbox, message: Mail, customer: UserPlus } as const;
+const ICONS = { order: ShoppingBag, payment: CircleDollarSign, payment_failed: CircleAlert, custom_request: Inbox, message: Mail, customer: UserPlus, comment: MessageSquareHeart } as const;
 const LIMIT = 40;
 
 function ago(iso: string) {

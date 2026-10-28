@@ -901,3 +901,48 @@ html .btn, html .button, .search-form .field { border-radius: 999px }
 .order-delete.sure { background: var(--rosa-suave); color: var(--moroccan-leather); padding: 6px 12px; text-decoration: none; animation: rise .2s var(--ease-out) both }
 .order-delete:active { transform: scale(.97) }
 .order-delete:disabled { opacity: .6; cursor: default }
+
+/* ───────── Comentarios de clientas ───────── */
+.section-comments { background: var(--mantequilla); padding: 20px 24px 64px }
+.section-comments .center-head { max-width: 620px; margin: 0 auto 28px; text-align: center }
+.section-comments .center-head .lb { display: inline-flex; gap: 10px; align-items: center }
+.h-comments { font-size: clamp(34px, 5vw, 52px); line-height: 1; color: var(--deep-olive); margin: 10px 0 }
+.h-comments i { color: var(--moroccan-leather) }
+.comment-gate, .comment-form { max-width: 620px; margin: 0 auto 36px; padding: 24px; background: var(--cream); border: 1.5px solid var(--deep-olive); border-radius: 18px }
+.comment-gate { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between }
+.comment-gate p { margin: 0 }
+.comment-form { display: grid; gap: 14px }
+.comment-form .fgroup { position: relative }
+.comment-count { position: absolute; right: 10px; bottom: 8px; font-size: 11px; opacity: .55 }
+.comment-files { display: flex; flex-wrap: wrap; gap: 10px }
+.comment-thumb, .comment-add { position: relative; width: 76px; height: 76px; border-radius: 12px; overflow: hidden }
+.comment-thumb img { width: 100%; height: 100%; object-fit: cover }
+.comment-thumb button { position: absolute; top: 4px; right: 4px; display: grid; place-items: center; width: 22px; height: 22px; border: 0; border-radius: 50%; background: #2b2a1fcc; color: #fff; cursor: pointer }
+.comment-add { display: grid; place-content: center; text-align: center; border: 1.5px dashed var(--deep-olive); color: var(--deep-olive); cursor: pointer; transition: background-color .15s var(--ease-out), transform .12s var(--ease-out) }
+.comment-add:hover { background: #4f553712 }
+.comment-add:active { transform: scale(.96) }
+.comment-add span { font-size: 24px; line-height: 1 }
+.comment-add small { font-size: 11px }
+.comment-add:focus-within { outline: 2px solid var(--moroccan-leather); outline-offset: 2px }
+.comment-rules { margin: 0; font-size: 12px; color: #5D5845 }
+.comment-list { max-width: 1100px; margin: 0 auto; columns: 3 300px; column-gap: 18px }
+.comment-empty { text-align: center; column-span: all; color: #5D5845 }
+.comment-card { break-inside: avoid; margin: 0 0 18px; padding: 18px; background: var(--cream); border-radius: 18px; border: 1.5px solid #4f553733; animation: rise .35s var(--ease-out) both }
+.comment-card[data-status="pending"] { border-style: dashed; opacity: .85 }
+.comment-card header { display: flex; gap: 10px; align-items: center; flex-wrap: wrap }
+.comment-card header strong { display: block; font-size: 14px; color: var(--deep-olive) }
+.comment-card header small { font-size: 11px; opacity: .65 }
+.comment-avatar { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--rosa-suave); color: var(--moroccan-leather); font-weight: 700 }
+.comment-badge { font-size: 10px; padding: 3px 8px; border-radius: 99px; background: #b98d8430; color: var(--pink-ink) }
+.comment-del { margin-left: auto; display: grid; place-items: center; width: 28px; height: 28px; border: 0; border-radius: 50%; background: none; color: inherit; opacity: .5; cursor: pointer }
+.comment-del:hover { opacity: 1; background: #4f553712 }
+.comment-card p { margin: 12px 0 0; font-size: 14px; line-height: 1.6; white-space: pre-line; overflow-wrap: anywhere }
+.comment-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; margin-top: 12px }
+.comment-photos button { padding: 0; border: 0; border-radius: 10px; overflow: hidden; aspect-ratio: 1; cursor: zoom-in }
+.comment-photos img { width: 100%; height: 100%; object-fit: cover; transition: transform .25s var(--ease-out) }
+.comment-photos button:hover img { transform: scale(1.04) }
+.comment-zoom { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 24px; background: #1d1c14e0; animation: fade .2s var(--ease-out) }
+.comment-zoom img { max-width: 100%; max-height: 88vh; border-radius: 12px }
+.comment-zoom button { position: absolute; top: 16px; right: 16px; display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 50%; background: var(--cream); color: var(--deep-olive); cursor: pointer }
+.admin-comment-photos { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 }
+.admin-comment-photos img { width: 96px; height: 96px; object-fit: cover; border-radius: 8px }

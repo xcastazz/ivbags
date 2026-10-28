@@ -116,20 +116,6 @@ export function BlogSection({ posts, heading }: { posts: Post[]; heading?: boole
   );
 }
 
-/** 12 · Fotos de Instagram en movimiento. */
-export function InstaSection({ c, photos }: { c: SiteContent; photos: string[] }) {
-  if (!photos.length) return null;
-  const href = `https://instagram.com/${c.instagram}`;
-  return (
-    <section aria-label="Instagram" className="section-insta">
-      <a className="insta-head" href={href} target="_blank" rel="noopener"><Star size={16} /><span className="lb">Síguenos en Instagram · @{c.instagram}</span><Star size={16} /></a>
-      <div className="marquee" aria-label="Fotos de Instagram">
-        <div className="itrack">{[...photos, ...photos].map((src, i) => <a key={i} href={href} target="_blank" rel="noopener" className="iph" aria-label="Ver en Instagram" tabIndex={i < photos.length ? 0 : -1}><img src={src} alt="" /></a>)}</div>
-      </div>
-    </section>
-  );
-}
-
 /** 13 · Hablemos, en Deep Olive con encaje arriba y abajo. */
 export function ContactSection({ c, heading = "h2" }: { c: SiteContent; heading?: "h1" | "h2" }) {
   const H = heading;
@@ -152,11 +138,6 @@ export function ContactSection({ c, heading = "h2" }: { c: SiteContent; heading?
       <Lace />
     </section>
   );
-}
-
-/** Fotos para la cinta de Instagram: las del catálogo, sin repetir. */
-export function instaPhotos(products: Product[]) {
-  return products.flatMap((p) => p.images).filter((src, i, all) => all.indexOf(src) === i).slice(0, 8);
 }
 
 /** Enlace para volver a la portada desde las páginas internas. */
