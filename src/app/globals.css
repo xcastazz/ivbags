@@ -579,7 +579,7 @@ svg.check path { fill: none; stroke: var(--olive); stroke-width: 4; stroke-linec
 .invoice-note h2 { margin: 0 }
 .invoice-note p { font-size: 12px; line-height: 1.5; margin-bottom: 0 }
 /* Admin: navegación, tablas y editores */
-.admin-sidebar { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; overflow-y: auto }
+.admin-sidebar { position: sticky; top: 0; z-index: 30; height: 100vh; display: flex; flex-direction: column; overflow-y: auto }
 .admin-sidebar nav a span { white-space: nowrap }
 /* Notificaciones del panel */
 .notif { position: relative; margin: -12px 0 18px }
