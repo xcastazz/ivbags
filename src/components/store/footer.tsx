@@ -13,7 +13,7 @@ export function Footer({ content }: { content: SiteContent }) {
         <div className="footer-brand"><Link href="/" aria-label="IV Bags, inicio"><Logo height={46} tone="crema" /></Link><div className="lb">Hecho a mano</div></div>
         <div className="footer-cols">
           <div><div className="lb">Productos</div>{CATEGORIES.map((c) => <Link key={c} href={catHref(c)}>{c}</Link>)}<Link href="/personaliza">Personaliza tu bolso</Link></div>
-          <div><div className="lb">Ayuda</div><Link href="/legal/envios-y-devoluciones">Envíos, cambios y devoluciones</Link><Link href="/nosotras">Nosotras</Link><Link href="/blog">Blog</Link><Link href="/contacto">Contacto</Link><Link href="/cuenta">Mi cuenta</Link></div>
+          <div><div className="lb">Ayuda</div><Link href="/legal/envios">Envíos</Link><Link href="/legal/cambios-y-devoluciones">Cambios y devoluciones</Link><Link href="/nosotras">Nosotras</Link><Link href="/blog">Blog</Link><Link href="/contacto">Contacto</Link><Link href="/cuenta">Mi cuenta</Link></div>
           <div><div className="lb">Legal</div><Link href="/legal/terminos">Términos y condiciones</Link><Link href="/legal/privacidad">Política de privacidad</Link></div>
         </div>
       </div>

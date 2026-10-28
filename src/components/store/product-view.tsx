@@ -28,9 +28,9 @@ export function ProductView({ p, related, whatsapp }: { p: Product; related: Pro
     p.details && { t: "Detalles", d: p.details },
     { t: "Cuidados", d: "Lava a mano con agua fría, por el revés y sin blanqueador. Seca a la sombra." },
     { t: "Inspiración", d: "Cada pieza nace de la naturaleza, los recuerdos y las cosas pequeñas que nos hacen felices. La pintamos y bordamos a mano, así que ninguna es exactamente igual a otra." },
-    { t: "Envíos y tiempos", d: "Si está listo, lo despachamos 1 día hábil después de tu pago. Si es por encargo, lo tenemos listo en 2 semanas." },
-    { t: "Cambios y devoluciones", d: "Puedes pedir cambio dentro de los 5 días siguientes a recibir tu pedido, con la pieza sin uso y en su empaque. Las piezas personalizadas no tienen cambio ni devolución. Escríbenos por WhatsApp para gestionarlo." },
-  ].filter(Boolean) as { t: string; d: string }[];
+    { t: "Envíos y tiempos", d: "Enviamos a todo Colombia con Coordinadora e Interrapidísimo. Si está listo, lo despachamos 1 día hábil después de tu pago; si es por encargo, lo tenemos listo en 2 semanas. Al tiempo de preparación se suman de 2 a 5 días hábiles de transporte.", link: ["/legal/envios", "Ver política de envíos"] },
+    { t: "Cambios y devoluciones", d: "Cada pieza está hecha a mano, así que puede tener pequeñas diferencias con la foto. Puedes cambiar la talla o la referencia dentro de los 15 días calendario siguientes a recibir tu pedido, con la pieza sin uso y en su empaque. Si te llega con un defecto o distinta a lo que pediste, tienes 30 días para escribirnos con fotos. Los personalizados y los productos en descuento no tienen cambio.", link: ["/legal/cambios-y-devoluciones", "Lee la política completa"] },
+  ].filter(Boolean) as { t: string; d: string; link?: [string, string] }[];
 
   function addCurrent() {
     if (guest) return openSignIn("cart");
@@ -83,7 +83,7 @@ export function ProductView({ p, related, whatsapp }: { p: Product; related: Pro
               {info.map((it, i) => (
                 <div className={`acc tone-${i}`} key={it.t}>
                   <button onClick={() => setAcc(acc === i ? -1 : i)} aria-expanded={acc === i}>{it.t}<span className="acc-sign" aria-hidden>+</span></button>
-                  <div className="reveal" data-open={acc === i}><div><p>{it.d}</p></div></div>
+                  <div className="reveal" data-open={acc === i}><div><p>{it.d}{it.link && <> <Link className="inline-link" href={it.link[0]}>{it.link[1]}</Link></>}</p></div></div>
                 </div>
               ))}
             </div>

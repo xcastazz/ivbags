@@ -976,3 +976,9 @@ html .btn, html .button, .search-form .field { border-radius: 999px }
 .admin-video-preview { display: block; width: 100%; max-height: 320px; margin: 6px 0; border-radius: 10px; background: #000 }
 .admin-video-add { display: flex; gap: 8px; align-items: center; justify-content: center; min-height: 56px; cursor: pointer }
 video.row-thumb { object-fit: cover }
+.legal-page section ul { margin: 8px 0 0; padding-left: 20px; font-size: 14px; line-height: 1.65 }
+.legal-page section p + p, .legal-page section ul + p { margin-top: 10px }
+.legal-intro { font-size: 15px; line-height: 1.65 }
+.legal-since { margin-top: 24px; font-size: 13px; font-style: italic; opacity: .75 }
+.legal-nav { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 28px; font-size: 13px }
+.legal-nav a { text-decoration: underline; text-underline-offset: 3px; color: var(--wine) }

@@ -11,7 +11,7 @@ import { Star } from "@/components/store/icons";
 type Item = { key: "terms" | "data" | "marketing"; required: boolean; title: string; text: React.ReactNode };
 
 const ITEMS: Item[] = [
-  { key: "terms", required: true, title: "Términos y condiciones", text: <>Acepto los <a href={LEGAL_LINKS.terms} target="_blank" rel="noopener">términos y condiciones</a> de compra, incluida la política de <a href={LEGAL_LINKS.shipping} target="_blank" rel="noopener">envíos, cambios y devoluciones</a>. Las piezas personalizadas no tienen cambio.</> },
+  { key: "terms", required: true, title: "Términos y condiciones", text: <>Acepto los <a href={LEGAL_LINKS.terms} target="_blank" rel="noopener">términos y condiciones</a> de compra, incluidas las políticas de <a href={LEGAL_LINKS.shipping} target="_blank" rel="noopener">envíos</a> y de <a href={LEGAL_LINKS.returns} target="_blank" rel="noopener">cambios, devoluciones y garantías</a>. Las piezas personalizadas no tienen cambio.</> },
   { key: "data", required: true, title: "Tratamiento de datos personales", text: <>Autorizo a IV Bags a tratar mis datos (nombre, correo, teléfono y dirección) para gestionar mi cuenta y mis pedidos, según la <a href={LEGAL_LINKS.privacy} target="_blank" rel="noopener">política de privacidad</a> y la Ley 1581 de 2012. Puedo consultar, corregir o pedir que los borren cuando quiera.</> },
   { key: "marketing", required: false, title: "Novedades del taller (opcional)", text: <>Quiero recibir correos con piezas nuevas, ferias y talleres. Puedo darme de baja en cualquier momento.</> },
 ];
