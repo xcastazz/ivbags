@@ -111,6 +111,14 @@ textarea.field { padding: 12px 16px; min-height: 100px; resize: vertical }
 .mpanel[data-open="true"] .ddi:nth-of-type(2) { animation-delay: 30ms } .mpanel[data-open="true"] .ddi:nth-of-type(3) { animation-delay: 60ms } .mpanel[data-open="true"] .ddi:nth-of-type(4) { animation-delay: 90ms } .mpanel[data-open="true"] .ddi:nth-of-type(5) { animation-delay: 120ms }
 .mpanel .ddi-all { color: var(--venetian-pink) }
 .mlabel { color: var(--venetian-pink); font-size: 10px; padding: 6px 12px 2px }
+.msub { display: grid }
+.mpanel .msub-btn { display: flex; justify-content: space-between; align-items: center }
+.msub-btn svg { transition: transform .2s var(--ease-out) }
+.msub[data-open="true"] .msub-btn svg { transform: rotate(180deg) }
+.msub-list { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .22s var(--ease-out) }
+.msub[data-open="true"] .msub-list { grid-template-rows: 1fr }
+.msub-list > div { overflow: hidden; display: grid; margin-left: 12px; border-left: 1px solid var(--linea) }
+.mpanel .msub-list .ddi { font-size: 13px; font-weight: 600; padding: 8px 12px; animation: none }
 .msep { border: 0; border-top: 1px solid var(--linea); margin: 8px 12px; width: calc(100% - 24px) }
 .mcount { color: var(--venetian-pink) }
 /* Búsqueda: barra que se despliega bajo la cabecera */

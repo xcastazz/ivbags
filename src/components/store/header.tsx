@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { type Product } from "@/lib/types";
-import { money } from "@/lib/format";
+import { CATEGORIES, type Product } from "@/lib/types";
+import { catHref, money } from "@/lib/format";
 import { useStore } from "./store-provider";
 import { Bag, Close, Star } from "./icons";
 import { CartDrawer } from "./cart-drawer";
@@ -49,6 +49,7 @@ export function Header({ topbar, products }: { topbar: string; products: Product
 function CloudMenu({ open, setOpen }: { open: boolean; setOpen: (open: boolean) => void }) {
   const { guest, openSignIn } = useAuth();
   const ref = useRef<HTMLDivElement>(null);
+  const [shopOpen, setShopOpen] = useState(false);
 
   // Se cierra al tocar fuera o con Escape.
   useEffect(() => {
@@ -65,7 +66,21 @@ function CloudMenu({ open, setOpen }: { open: boolean; setOpen: (open: boolean) 
     <div className="mwrap" ref={ref}>
       <button className="mbtn" aria-expanded={open} aria-controls="menu-principal" onClick={() => setOpen(!open)}>Menú</button>
       <nav id="menu-principal" className="mpanel" data-open={open} aria-label="Principal" inert={!open}>
-        {SECTIONS.map(([href, label]) => <Link className="ddi" key={href} href={href} onClick={close}>{label}</Link>)}
+        {SECTIONS.map(([href, label]) => href === "/tienda"
+          ? (
+            <div key={href} className="msub" data-open={shopOpen}>
+              <button className="ddi msub-btn" aria-expanded={shopOpen} aria-controls="menu-tienda" onClick={() => setShopOpen(!shopOpen)}>
+                {label}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden><path d="m3 4.5 3 3 3-3" /></svg>
+              </button>
+              <div id="menu-tienda" className="msub-list" inert={!shopOpen}>
+                <div>
+                  <Link className="ddi" href="/tienda" onClick={close}>Ver todo</Link>
+                  {CATEGORIES.map((c) => <Link className="ddi" key={c} href={catHref(c)} onClick={close}>{c === "Personalizados con mascotas" ? "Con mascotas" : c}</Link>)}
+                </div>
+              </div>
+            </div>
+          )
+          : <Link className="ddi" key={href} href={href} onClick={close}>{label}</Link>)}
         <hr className="msep" />
         {guest
           ? <button className="ddi" onClick={() => { close(); openSignIn("account"); }}>Entrar</button>
