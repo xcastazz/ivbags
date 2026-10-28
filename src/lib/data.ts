@@ -1,11 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
 import { cacheLife, cacheTag } from "next/cache";
+import { SUPABASE_URL } from "./supabase/url";
 import { DEFAULT_CONTENT, DEFAULT_PRODUCTS } from "./defaults";
 import type { Post, Product, SiteContent, StoreVideo } from "./types";
 
 /** Lecturas públicas de la tienda, cacheadas. El admin las refresca con `refreshStore`. */
 function publicClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const url = SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   return url && key ? createClient(url, key, { auth: { persistSession: false } }) : null;
 }
