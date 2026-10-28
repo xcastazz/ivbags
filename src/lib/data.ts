@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { cacheLife, cacheTag } from "next/cache";
 import { DEFAULT_CONTENT, DEFAULT_PRODUCTS } from "./defaults";
-import type { Post, Product, SiteContent } from "./types";
+import type { Post, Product, SiteContent, StoreVideo } from "./types";
 
 /** Lecturas públicas de la tienda, cacheadas. El admin las refresca con `refreshStore`. */
 function publicClient() {
@@ -47,4 +47,14 @@ export async function getPosts(): Promise<Post[]> {
   if (!db) return [];
   const { data } = await db.from("posts").select("*").eq("published", true).order("event_date", { ascending: true, nullsFirst: false });
   return (data ?? []) as Post[];
+}
+
+export async function getVideos(): Promise<StoreVideo[]> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("videos");
+  const db = publicClient();
+  if (!db) return [];
+  const { data } = await db.from("store_videos").select("*").eq("published", true).order("sort_order").order("created_at", { ascending: false });
+  return (data ?? []) as StoreVideo[];
 }

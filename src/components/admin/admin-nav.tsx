@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, FileText, Inbox, LayoutTemplate, Mail, MessageSquareHeart, Newspaper, ShoppingBag, Store, Users } from "lucide-react";
+import { BarChart3, Clapperboard, FileText, Inbox, LayoutTemplate, Mail, MessageSquareHeart, Newspaper, ShoppingBag, Store, Users } from "lucide-react";
 import { Logo } from "@/components/store/logo";
 import { AdminNotifications } from "./notifications";
 
 const LINKS = [
   ["/admin", "Resumen", BarChart3], ["/admin/pedidos", "Pedidos", ShoppingBag], ["/admin/productos", "Productos", Store],
-  ["/admin/solicitudes", "Personalizados", Inbox], ["/admin/mensajes", "Mensajes", Mail], ["/admin/comentarios", "Comentarios", MessageSquareHeart],["/admin/blog", "Blog", Newspaper],
+  ["/admin/solicitudes", "Personalizados", Inbox], ["/admin/mensajes", "Mensajes", Mail], ["/admin/comentarios", "Comentarios", MessageSquareHeart], ["/admin/blog", "Blog", Newspaper], ["/admin/videos", "Videos", Clapperboard],
   ["/admin/contenido", "Contenido", LayoutTemplate], ["/admin/clientes", "Clientes", Users], ["/admin/facturas", "Facturas", FileText],
 ] as const;
 

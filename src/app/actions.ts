@@ -3,7 +3,7 @@
 import { updateTag } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 
-const TAGS = ["products", "content", "posts"] as const;
+const TAGS = ["products", "content", "posts", "videos"] as const;
 
 /** El admin llama esto después de guardar para que la tienda muestre los cambios de inmediato. Nunca lanza errores. */
 export async function refreshStore(tags: (typeof TAGS)[number][]): Promise<{ ok: boolean; reason?: string }> {

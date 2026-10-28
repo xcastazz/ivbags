@@ -946,3 +946,33 @@ html .btn, html .button, .search-form .field { border-radius: 999px }
 .comment-zoom button { position: absolute; top: 16px; right: 16px; display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 50%; background: var(--cream); color: var(--deep-olive); cursor: pointer }
 .admin-comment-photos { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 }
 .admin-comment-photos img { width: 96px; height: 96px; object-fit: cover; border-radius: 8px }
+
+/* ───────── Videos del taller ───────── */
+.section-videos { background: var(--cream); padding: 64px 24px }
+.videos-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center }
+.video-frame { position: relative; aspect-ratio: 9 / 16; max-height: 640px; margin: 0 auto; border-radius: 24px; overflow: hidden; background: var(--deep-olive); border: 1.5px solid var(--deep-olive); box-shadow: 0 20px 50px #2b2a1f30 }
+.video-frame video { width: 100%; height: 100%; object-fit: cover; display: block }
+.video-sound { position: absolute; right: 14px; bottom: 14px; display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 50%; background: #fbf5ecdd; color: var(--deep-olive); cursor: pointer; transition: transform .12s var(--ease-out) }
+.video-sound:active { transform: scale(.92) }
+.video-thumbs { display: flex; gap: 10px; margin-top: 14px; overflow-x: auto; padding-bottom: 4px; justify-content: center }
+.video-thumbs button { flex: none; width: 84px; padding: 0; border: 0; background: none; color: var(--deep-olive); cursor: pointer; text-align: left; opacity: .6; transition: opacity .15s var(--ease-out) }
+.video-thumbs button.on, .video-thumbs button:hover { opacity: 1 }
+.video-thumbs img, .video-thumbs video { width: 84px; height: 110px; object-fit: cover; border-radius: 12px; display: block; border: 2px solid transparent }
+.video-thumbs button.on img, .video-thumbs button.on video { border-color: var(--moroccan-leather) }
+.video-thumbs span { display: block; margin-top: 4px; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.video-info .lb { display: inline-flex; gap: 10px; align-items: center }
+.h-videos { font-size: clamp(34px, 4.5vw, 52px); line-height: 1; color: var(--deep-olive); margin: 12px 0 }
+.video-caption { font-family: var(--serif); font-style: italic; font-size: 20px; color: var(--moroccan-leather) }
+.video-facts { list-style: none; padding: 0; margin: 22px 0; display: grid; gap: 12px }
+.video-facts li { padding-left: 16px; border-left: 2px solid var(--venetian-pink) }
+.video-facts strong { display: block; font-size: 14px; color: var(--deep-olive) }
+.video-facts span { font-size: 13px; color: #5D5845 }
+.video-links { display: flex; flex-wrap: wrap; gap: 12px }
+@media (max-width: 760px) {
+  .section-videos { padding: 48px 16px }
+  .videos-inner { grid-template-columns: 1fr; gap: 28px }
+  .video-frame { max-height: 72vh }
+}
+.admin-video-preview { display: block; width: 100%; max-height: 320px; margin: 6px 0; border-radius: 10px; background: #000 }
+.admin-video-add { display: flex; gap: 8px; align-items: center; justify-content: center; min-height: 56px; cursor: pointer }
+video.row-thumb { object-fit: cover }

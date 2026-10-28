@@ -33,3 +33,5 @@ export const ORDER_STATUS: Record<OrderStatus, string> = {
   new: "Nuevo", quoted: "Cotizado", confirmed: "Pago confirmado", in_production: "En producción",
   shipped: "Enviado", completed: "Entregado", cancelled: "Cancelado",
 };
+
+export type StoreVideo = { id: string; title: string; caption: string | null; video_url: string; poster_url: string | null; published: boolean; sort_order: number; created_at: string };
