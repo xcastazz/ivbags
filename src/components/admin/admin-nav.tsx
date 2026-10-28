@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BarChart3, FileText, Inbox, LayoutTemplate, Mail, Newspaper, ShoppingBag, Store, Users } from "lucide-react";
 import { Logo } from "@/components/store/logo";
+import { AdminNotifications } from "./notifications";
 
 const LINKS = [
   ["/admin", "Resumen", BarChart3], ["/admin/pedidos", "Pedidos", ShoppingBag], ["/admin/productos", "Productos", Store],
@@ -17,6 +18,7 @@ export function AdminNav() {
     <aside className="admin-sidebar">
       <Link className="hlogo light" href="/admin" aria-label="Panel IV Bags"><Logo height={44} tone="crema" /></Link>
       <p>Taller · admin</p>
+      <AdminNotifications />
       <nav aria-label="Admin">
         {LINKS.map(([href, label, Icon]) => <Link key={href} href={href} className={path === href ? "selected" : undefined} aria-current={path === href ? "page" : undefined} title={label}><Icon size={16} /><span>{label}</span></Link>)}
       </nav>
