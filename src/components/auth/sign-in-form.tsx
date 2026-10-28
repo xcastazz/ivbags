@@ -15,11 +15,11 @@ const TIMEOUT_MS = 25000;
 const CODE_LENGTH = 8;
 
 /** Traduce los errores de Supabase Auth a algo que cualquier persona entienda. */
-function explain(error: Pick<AuthError, "message" | "status">) {
+function explain(error: Pick<AuthError, "message" | "status">, mode: "code" | "password" = "code") {
   const m = error.message.toLowerCase();
   if (m === "timeout") return "El servidor de correo no respondió a tiempo. Intenta de nuevo en un momento.";
   if (error.status === 429 || m.includes("rate limit") || m.includes("security purposes")) return "Pediste muchos correos seguidos. Espera un minuto e intenta de nuevo.";
-  if (m.includes("invalid login credentials")) return "El correo o la contraseña no coinciden.";
+  if (m.includes("invalid login credentials") || (mode === "password" && m.includes("invalid"))) return "El correo o la contraseña no coinciden. Si creaste tu cuenta con un código y nunca pusiste contraseña, entra “Con código” o toca “Olvidé mi contraseña”.";
   if (m.includes("email not confirmed")) return "Primero verifica tu correo con un código.";
   if (m.includes("expired") || m.includes("invalid") || m.includes("otp")) return "El código no es válido o ya venció. Pide uno nuevo.";
   if (m.includes("sending") || m.includes("smtp") || m.includes("mail")) return "No pudimos enviar el correo. Revisa la configuración de correo en Supabase.";
@@ -97,7 +97,7 @@ export function SignInForm({ onSignedIn, compact, intro }: { onSignedIn: (needsP
     setBusy(true);
     const { error } = await safely(() => createClient().auth.signInWithPassword({ email: email.trim().toLowerCase(), password }));
     setBusy(false);
-    if (error) return toast.error("No pudimos entrar", { description: explain(error) });
+    if (error) { console.warn("signInWithPassword", error.status, error.message); return toast.error("No pudimos entrar", { description: explain(error, "password") }); }
     await complete();
   }
 
