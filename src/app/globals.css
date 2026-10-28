@@ -993,3 +993,12 @@ video.row-thumb { object-fit: cover }
 .wa-float:active { transform: scale(.95) }
 @media (min-width: 900px) { .wa-float { gap: 10px } .wa-float span { max-width: 140px } }
 @media (prefers-reduced-motion: reduce) { .wa-float, .wa-float span { transition: none } }
+
+/* Botón de cuenta en la cabecera */
+.icon-btn.acct-btn { width: auto; min-width: 48px; display: flex; gap: 8px; padding: 0 14px; border: 1.5px solid var(--deep-olive); border-radius: 999px; height: 40px; font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; margin-right: 4px; transition: background-color .2s var(--ease-out), color .2s var(--ease-out), transform .16s var(--ease-out) }
+.icon-btn.acct-btn:hover { background: var(--deep-olive); color: var(--fondo) }
+@media (max-width: 700px) {
+  .icon-btn.acct-btn { border: 0; padding: 0; width: 44px; min-width: 44px; height: 48px; margin: 0 }
+  .icon-btn.acct-btn span { display: none }
+  .icon-btn.acct-btn:hover { background: transparent; color: var(--deep-olive) }
+}

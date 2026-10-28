@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { CATEGORIES, type Product } from "@/lib/types";
 import { catHref, money } from "@/lib/format";
 import { useStore } from "./store-provider";
-import { Bag, Close, Star } from "./icons";
+import { Bag, Close, Star, User } from "./icons";
 import { CartDrawer } from "./cart-drawer";
 import { Logo } from "./logo";
 import { useAuth } from "@/components/auth/auth-provider";
@@ -33,6 +33,9 @@ export function Header({ topbar, products }: { topbar: string; products: Product
           <CloudMenu open={menuOpen} setOpen={(o) => { setMenuOpen(o); if (o) setSearchOpen(false); }} />
           <Link className="hlogo" href="/" aria-label="IV Bags, inicio"><Logo className="hlogo2" height={58} /></Link>
           <div className="hicons">
+            {guest
+              ? <button className="icon-btn acct-btn" onClick={() => openSignIn("account")} aria-label="Iniciar sesión"><User /><span>Entrar</span></button>
+              : <Link className="icon-btn acct-btn" href="/cuenta" aria-label="Mi cuenta"><User /><span>Mi cuenta</span></Link>}
             <button className="icon-btn" aria-label={searchOpen ? "Cerrar búsqueda" : "Buscar"} aria-expanded={searchOpen} aria-controls="buscar" onClick={() => { setSearchOpen((o) => !o); setMenuOpen(false); }}>
               {searchOpen ? <Close size={20} /> : <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 20 20" /></svg>}
             </button>
