@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { formatAddress, formatStreet, type Shipping } from "@/lib/colombia";
 import { EMPTY_SHIPPING, ShippingForm } from "./shipping-form";
+import { SHIPPING_RATES, shippingZone } from "@/lib/shipping";
 import { orderToShop } from "@/lib/whatsapp";
 import { onlinePaymentsEnabled, startOnlinePayment } from "@/lib/pay";
 import Link from "next/link";
@@ -28,7 +29,8 @@ export function CheckoutView({ content }: { content: SiteContent }) {
   const online = onlinePaymentsEnabled();
   const [retrying, setRetrying] = useState(false);
   const payLabel = "Pago en línea (Wompi)";
-  const shipping = content.shippingCents;
+  const zone = shippingZone(ship.city, ship.department);
+  const shipping = zone ? SHIPPING_RATES[zone].cents : 0;
 
   // Rellena con la dirección guardada (cuenta o este navegador) y los datos del perfil.
   useEffect(() => {
@@ -159,7 +161,7 @@ export function CheckoutView({ content }: { content: SiteContent }) {
           {cart.map((line) => <div className="order-line" key={line.key}>{line.image ? <img src={line.image} alt={line.name} /> : <span className="cart-thumb" />}<div><b>{line.name}</b><small>{[lineDetail(line), `Cantidad ${line.qty}`].filter(Boolean).join(" · ")}</small></div><span>{money(line.priceCents * line.qty)}</span></div>)}
           <div className="totals">
             <div className="row-between"><span>Subtotal</span><span>{money(subtotal)}</span></div>
-            <div className="row-between"><span>Envío</span><span>{shipping ? money(shipping) : "Se coordina por WhatsApp"}</span></div>
+            <div className="row-between"><span>Envío{zone && <small className="ship-zone">{SHIPPING_RATES[zone].label}</small>}</span><span>{zone ? money(shipping) : "Elige tu ciudad"}</span></div>
             <div className="row-between strong"><span>Total</span><span>{money(subtotal + shipping)}</span></div>
           </div>
           <button className="btn btn-solid tall" type="submit" disabled={sending || !cart.length || !online}>{sending ? <><span className="spinner" aria-hidden />Preparando el pago</> : `Pagar ${money(subtotal + shipping)}`}</button>

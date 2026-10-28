@@ -982,3 +982,4 @@ video.row-thumb { object-fit: cover }
 .legal-since { margin-top: 24px; font-size: 13px; font-style: italic; opacity: .75 }
 .legal-nav { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 28px; font-size: 13px }
 .legal-nav a { text-decoration: underline; text-underline-offset: 3px; color: var(--wine) }
+.ship-zone { display: block; font-size: 11px; opacity: .65 }

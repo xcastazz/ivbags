@@ -88,7 +88,7 @@ const documents: Record<string, Doc> = {
         "Hecho por encargo: está listo 2 semanas después del pago.",
         "Personalizados con mascota: están listos 2 semanas después del pago.",
       ], "A estos tiempos se suma el tiempo de transporte, que es de 2 a 5 días hábiles según la ciudad. Si tu pedido mezcla productos listos y por encargo, lo enviamos completo cuando todo esté listo, salvo que acordemos otra cosa."] },
-      { h: "3. Costo del envío", body: ["El valor del envío se calcula según tu ciudad y se paga junto con tu pedido, al momento de hacer el pago."] },
+      { h: "3. Costo del envío", body: ["El valor del envío se calcula según tu ciudad y se paga junto con tu pedido, al momento de hacer el pago:", ["Medellín (domiciliario): $12.000.", "Bello, Itagüí, Sabaneta y Envigado: $15.000.", "Resto del país (transportadora): $18.000."]] },
       { h: "4. Seguimiento", body: ["Cuando despachamos tu pedido te enviamos el número de guía por WhatsApp o correo para que puedas rastrearlo."] },
       { h: "5. Dirección de entrega", body: ["Revisa bien tus datos de envío antes de pagar. Si el paquete se devuelve por una dirección incorrecta o porque nadie lo recibió, el nuevo envío corre por tu cuenta."] },
       { h: "6. Al recibir tu pedido", body: [`Revisa el paquete apenas llegue. Si viene dañado o con algo distinto a lo que compraste, envíanos fotos o videos al WhatsApp ${WA} o a ${EMAIL}, como explica nuestra Política de cambios, devoluciones y garantías.`] },

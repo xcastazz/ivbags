@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import { Plus, X } from "lucide-react";
 import { DEFAULT_CONTENT } from "@/lib/defaults";
 import type { SiteContent, TeamMember } from "@/lib/types";
-import { centsFromCop, copFromCents, db, Loading, mutate, PageHead, useQuery } from "./kit";
+import { db, Loading, mutate, PageHead, useQuery } from "./kit";
 
 export function ContentAdmin() {
   const { data, loading } = useQuery<{ value: Partial<SiteContent> }>(async () => db().from("site_content").select("value").eq("key", "site").maybeSingle());
@@ -26,7 +26,7 @@ function ContentForm({ initial }: { initial: SiteContent }) {
       aboutTitle: s("aboutTitle"), aboutItalic: s("aboutItalic"), aboutText: s("aboutText"), team: team.filter((t) => t.name.trim()),
       customIntro: s("customIntro"), customSteps: [s("step1"), s("step2"), s("step3")].filter(Boolean),
       whatsapp: s("whatsapp").replace(/\D/g, ""), instagram: s("instagram").replace(/^@/, ""), email: s("email"), city: s("city"),
-      shippingCents: centsFromCop(f.get("shipping")), paymentInstructions: s("paymentInstructions"),
+      shippingCents: initial.shippingCents, paymentInstructions: s("paymentInstructions"),
       legalName: s("legalName"), taxId: s("taxId"), legalAddress: s("legalAddress"), invoiceNote: s("invoiceNote"),
     };
     setSaving(true);
@@ -67,7 +67,7 @@ function ContentForm({ initial }: { initial: SiteContent }) {
         <fieldset className="admin-panel product-form"><legend>Contacto y pagos</legend>
           <div className="form-pair"><label>WhatsApp (con 57)<input name="whatsapp" inputMode="numeric" defaultValue={initial.whatsapp} /></label><label>Instagram<input name="instagram" defaultValue={initial.instagram} /></label></div>
           <div className="form-pair"><label>Correo<input name="email" type="email" defaultValue={initial.email} /></label><label>Ciudad<input name="city" defaultValue={initial.city} /></label></div>
-          <label>Costo de envío (COP) <span className="soft">0 = se coordina por WhatsApp</span><input name="shipping" inputMode="numeric" defaultValue={copFromCents(initial.shippingCents)} /></label>
+          <p className="soft">Envíos: Medellín $12.000 · Bello, Itagüí, Sabaneta y Envigado $15.000 · resto del país $18.000. Se calculan solos según la ciudad (para cambiarlos, pídelo en el código).</p>
           <label>Instrucciones de pago<textarea name="paymentInstructions" rows={3} defaultValue={initial.paymentInstructions} /></label>
         </fieldset>
         <fieldset className="admin-panel product-form"><legend>Datos para facturas</legend>
