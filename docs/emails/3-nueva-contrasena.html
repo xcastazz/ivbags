@@ -2,38 +2,38 @@
      Asunto: Crea una clave nueva para IV Bags -->
 <!doctype html>
 <html lang="es">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light only"><title>Crea una clave nueva</title></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light only"><title>Crea una clave nueva</title><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet"></head>
 <body style="margin:0;padding:0;background:#FBF5EC;">
 <div style="display:none;max-height:0;overflow:hidden;opacity:0;">Toca el botón para crear una clave nueva. El enlace vence en una hora.&#8199;&#847;&#8199;&#847;&#8199;&#847;</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#FBF5EC;">
   <tr><td align="center" style="padding:32px 16px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;">
 
-      <tr><td align="center" style="padding:0 0 20px;">
-        <span style="display:inline-block;background:#4F5537;color:#FBF5EC;font-family:Arial,Helvetica,sans-serif;font-weight:900;font-size:22px;line-height:1;padding:10px 9px 8px;border-radius:4px 4px 8px 8px;">iV</span>
-        <span style="font-family:Arial,Helvetica,sans-serif;font-weight:900;font-size:30px;letter-spacing:-1px;color:#4F5537;vertical-align:middle;">&nbsp;bags</span>
-      </td></tr>
+      <tr><td align="center" style="padding:0 0 22px;"><a href="{{ .SiteURL }}" style="text-decoration:none;"><img src="https://ivbagss.com/kit/logos/ivbags-logo-deep-olive.png" width="150" alt="IV Bags" style="display:block;width:150px;height:auto;border:0;"></a></td></tr>
 
-      <tr><td style="background:#6D4546;border-radius:18px 18px 0 0;padding:14px 0;text-align:center;font-family:Georgia,serif;color:#EFDCD5;font-size:16px;letter-spacing:10px;">✿ ❀ ✿ ❀ ✿</td></tr>
+      <tr><td align="center" style="background:#6D4546;border-radius:18px 18px 0 0;padding:16px 24px;"><img src="https://ivbagss.com/kit/ilustraciones/franja-pensamientos/franja-pensamientos-rosa.png" width="300" alt="" style="display:block;width:300px;max-width:100%;height:auto;border:0;"></td></tr>
 
       <tr><td style="background:#FFFDF8;border:1px solid #E3D5C1;border-top:0;border-radius:0 0 18px 18px;padding:38px 36px 34px;">
-        <h1 style="margin:0 0 16px;font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:34px;line-height:1.1;color:#4F5537;">¿Olvidaste tu clave? <em style="color:#6D4546;">Nos pasa a cualquiera</em></h1>
-        <p style="margin:0 0 26px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.7;color:#3F3C26;">{{ if .Data.full_name }}{{ .Data.full_name }}, toca{{ else }}Toca{{ end }} el botón para crear una clave nueva. Te llevamos directo a tu cuenta para que la escribas.</p>
+        <h1 style="margin:0 0 16px;font-family:'Instrument Serif',Georgia,'Times New Roman',serif;font-weight:400;font-size:34px;line-height:1.1;color:#4F5537;">¿Olvidaste tu clave? <em style="color:#6D4546;">Nos pasa a cualquiera</em></h1>
+        <p style="margin:0 0 26px;font-family:'Nunito Sans',Arial,Helvetica,sans-serif;font-size:15px;line-height:1.7;color:#3F3C26;">{{ if .Data.full_name }}{{ .Data.full_name }}, toca{{ else }}Toca{{ end }} el botón para crear una clave nueva. Te llevamos directo a tu cuenta para que la escribas.</p>
 
         <table role="presentation" cellpadding="0" cellspacing="0" align="center"><tr><td align="center" bgcolor="#4F5537" style="border-radius:2px;">
-          <a href="{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=recovery" style="display:inline-block;padding:16px 34px;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#FBF5EC;text-decoration:none;">Crear mi clave nueva</a>
+          <a href="{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=recovery" style="display:inline-block;padding:16px 34px;font-family:'Nunito Sans',Arial,Helvetica,sans-serif;font-size:13px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#FBF5EC;text-decoration:none;">Crear mi clave nueva</a>
         </td></tr></table>
 
-        <p style="margin:26px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#6E6656;">El enlace vence en una hora. Si no pediste cambiar tu clave, ignora este correo: tu clave actual sigue funcionando.</p>
+        <p style="margin:26px 0 0;font-family:'Nunito Sans',Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:#6E6656;">El enlace vence en una hora. Si no pediste cambiar tu clave, ignora este correo: tu clave actual sigue funcionando.</p>
 
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:28px;border-top:1px dashed #E3D5C1;"><tr><td style="padding-top:20px;">
-          <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:20px;color:#6D4546;">Con cariño,</p>
-          <p style="margin:2px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#3F3C26;">Luci, Ale y Eva · el taller de IV Bags</p>
+          <p style="margin:0;font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:20px;color:#6D4546;">Con cariño,</p>
+          <p style="margin:2px 0 0;font-family:'Nunito Sans',Arial,Helvetica,sans-serif;font-size:13px;color:#3F3C26;">Luci, Ale y Eva · el taller de IV Bags</p>
         </td></tr></table>
       </td></tr>
-
-      <tr><td align="center" style="padding:22px 10px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.7;color:#6E6656;">
-        ¿Problemas con el botón? Escríbenos por <a href="https://wa.me/573133264049" style="color:#6D4546;text-decoration:underline;">WhatsApp</a> y te ayudamos.
+      <tr><td align="center" style="padding:26px 0 0;"><img src="https://ivbagss.com/kit/ilustraciones/encaje/encaje-rosa.png" width="360" alt="" style="display:block;width:360px;max-width:100%;height:auto;border:0;"></td></tr>
+      <tr><td align="center" style="padding:14px 10px 0;font-family:'Nunito Sans',Arial,Helvetica,sans-serif;font-size:12px;line-height:1.7;color:#6E6656;">
+        Piezas pintadas, bordadas y estampadas a mano en Medellín<br>
+        <a href="{{ .SiteURL }}" style="color:#6D4546;font-weight:700;text-decoration:underline;">Ir a la tienda</a> &nbsp;·&nbsp;
+        <a href="https://instagram.com/iv_totebags" style="color:#6D4546;text-decoration:underline;">@iv_totebags</a> &nbsp;·&nbsp;
+        <a href="https://wa.me/573133264049" style="color:#6D4546;text-decoration:underline;">WhatsApp</a>
       </td></tr>
     </table>
   </td></tr>
