@@ -18,7 +18,7 @@ export const DEFAULT_CONTENT: SiteContent = {
     "Definimos juntas el diseño y te mostramos el boceto.",
     "Lo pintamos a mano y te lo enviamos.",
   ],
-  whatsapp: "573133264049", instagram: "iv.bags", email: "ivbags.taller@gmail.com", city: "Medellín, Colombia",
+  whatsapp: "573133264049", instagram: "iv_totebags", email: "ivbags.taller@gmail.com", city: "Medellín, Colombia",
   shippingCents: 0,
   paymentInstructions: "Pagas en línea con Wompi: tarjeta, PSE, Nequi, Botón Bancolombia o efectivo. Los productos listos se despachan 1 día hábil después del pago y los hechos por encargo en 2 semanas.",
   legalName: "IV Bags", taxId: "", legalAddress: "Medellín, Colombia",
