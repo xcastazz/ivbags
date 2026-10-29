@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getContent, getPosts, getProducts, getVideos } from "@/lib/data";
+import { getContent, getPosts, getVideos, getWeeklyFavorites } from "@/lib/data";
 import { Marquee, MushBand } from "@/components/store/bands";
 import { ShopView } from "@/components/store/shop";
 import { AboutSection, BlogSection, CategorySection, CustomSection, Hero } from "@/components/store/sections";
@@ -9,8 +9,9 @@ import { GuestWelcome } from "@/components/auth/auth-provider";
 
 /** Inicio en el orden del kit: portada, categorías, honguitos, favoritos, cinta, personaliza, nosotras, honguitos, videos, blog y comentarios. */
 export default async function Home() {
-  const [c, products, posts, videos] = await Promise.all([getContent(), getProducts(), getPosts(), getVideos()]);
-  const featured = products.filter((p) => p.featured);
+  const [c, { products, ranked, hasActivity }, posts, videos] = await Promise.all([getContent(), getWeeklyFavorites(), getPosts(), getVideos()]);
+  // Con actividad de la semana mandan los más vistos y comprados; si no, los destacados del admin.
+  const featured = hasActivity ? ranked.slice(0, 10) : products.filter((p) => p.featured);
   const pet = products.find((p) => p.is_pet);
   return (
     <>

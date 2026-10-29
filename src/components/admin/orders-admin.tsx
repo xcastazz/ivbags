@@ -40,7 +40,7 @@ export function OrdersAdmin() {
   async function invoice(o: Order) {
     const ok = await mutate(db().from("invoices").insert({
       order_id: o.id, subtotal_cents: o.subtotal_cents + o.shipping_cents, total_cents: o.total_cents, tax_cents: 0,
-      billing_snapshot: { name: o.customer_name, email: o.customer_email, phone: o.customer_phone, address: o.shipping_address, items: o.order_items.map((i) => ({ name: i.product_name, qty: i.quantity, unit: i.unit_price_cents, options: Object.entries(i.customization ?? {}).filter(([, v]) => v).map(([k, v]) => `${k === "petName" ? "Nombre de la mascota" : k === "pets" ? "Mascotas" : k}: ${v}`).join(" · ") })), shipping: o.shipping_cents, payment: o.payment_method, orderDate: o.created_at, notes: o.notes },
+      billing_snapshot: { name: o.customer_name, email: o.customer_email, phone: o.customer_phone, address: o.shipping_address, items: o.order_items.map((i) => ({ name: i.product_name, qty: i.quantity, unit: i.unit_price_cents, options: Object.entries(i.customization ?? {}).filter(([k, v]) => v && k !== "photos").map(([k, v]) => `${k === "petName" ? "Nombre de la mascota" : k === "pets" ? "Mascotas" : k}: ${v}`).join(" · ") })), shipping: o.shipping_cents, payment: o.payment_method, orderDate: o.created_at, notes: o.notes },
     }), "Factura creada en borrador");
     if (ok) reload();
   }
@@ -68,7 +68,7 @@ export function OrdersAdmin() {
                     <div className="order-detail">
                       <div>
                         <h3>Piezas</h3>
-                        <ul>{o.order_items.map((i) => <li key={i.id}><b>{i.quantity} × {i.product_name}</b> · {money(i.unit_price_cents * i.quantity)}{i.customization && Object.keys(i.customization).length > 0 && <small>{Object.entries(i.customization).filter(([, v]) => v).map(([k, v]) => `${k === "petName" ? "Nombre de la mascota" : k === "pets" ? "Mascotas" : k}: ${v}`).join(" · ")}</small>}</li>)}</ul>
+                        <ul>{o.order_items.map((i) => <li key={i.id}><b>{i.quantity} × {i.product_name}</b> · {money(i.unit_price_cents * i.quantity)}{i.customization && Object.keys(i.customization).length > 0 && <small>{Object.entries(i.customization).filter(([k, v]) => v && k !== "photos").map(([k, v]) => `${k === "petName" ? "Nombre de la mascota" : k === "pets" ? "Mascotas" : k}: ${v}`).join(" · ")}</small>}{Array.isArray(i.customization?.photos) && <span className="order-photos">{(i.customization.photos as string[]).map((src) => <a key={src} href={src} target="_blank" rel="noopener" download><img src={src} alt="Foto para personalizar" /></a>)}</span>}</li>)}</ul>
                         <p className="pay-line">{o.payment_status === "approved" ? <>✅ <b>Pagado</b> · {o.payment_method}{o.paid_at && ` · ${formatDate(o.paid_at, { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}`}{o.payment_tx_id && <small> · Transacción {o.payment_tx_id}</small>}</> : <>⏳ <b>Pago pendiente</b> · {o.payment_method ?? "sin método"}</>}</p>
                         <p className="totals-mini">Subtotal {money(o.subtotal_cents)} · Envío {money(o.shipping_cents)} · <b>Total {money(o.total_cents)}</b></p>
                         {o.notes && <p><b>Notas:</b> {o.notes}</p>}

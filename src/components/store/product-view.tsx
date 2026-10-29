@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import type { Product } from "@/lib/types";
 import { availability, catHref, money, waLink } from "@/lib/format";
 import { productQuestion } from "@/lib/whatsapp";
+import { trackProduct } from "@/lib/track";
+import { CustomPhotos } from "./photo-upload";
 import { useStore } from "./store-provider";
 import { useAuth } from "@/components/auth/auth-provider";
 import { Star } from "./icons";
@@ -22,8 +24,10 @@ export function ProductView({ p, related, whatsapp }: { p: Product; related: Pro
   const [qty, setQty] = useState(1);
   const [pets, setPets] = useState(1);
   const [petName, setPetName] = useState("");
+  const [photos, setPhotos] = useState<string[]>([]);
   const [acc, setAcc] = useState(0);
   const av = availability(p);
+  useEffect(() => trackProduct(p.id, "view"), [p.id]);
   const media = [...p.images.map((src) => ({ src, video: false })), ...(p.videos ?? []).map((src) => ({ src, video: true }))];
   const cur = media[imgIdx];
   const info = [
@@ -38,7 +42,8 @@ export function ProductView({ p, related, whatsapp }: { p: Product; related: Pro
     if (guest) return openSignIn("cart");
     const missing = p.options.find((o) => !sel[o.key]);
     if (missing) return toast.error(`Elige ${missing.label.toLowerCase()} primero`);
-    add(p, Object.fromEntries(p.options.map((o) => [o.label, sel[o.key]])), qty, p.is_pet ? { petName: petName.trim() || undefined, pets } : {});
+    trackProduct(p.id, "cart");
+    add(p, Object.fromEntries(p.options.map((o) => [o.label, sel[o.key]])), qty, p.is_pet ? { petName: petName.trim() || undefined, pets, photos: photos.length ? photos : undefined } : {});
   }
 
   return (
@@ -71,7 +76,11 @@ export function ProductView({ p, related, whatsapp }: { p: Product; related: Pro
             {p.is_pet && <>
               <div className="fgroup"><label className="lb wine" htmlFor="pet-name">Nombre de tu mascota <span className="soft">(opcional, sin costo)</span></label><input id="pet-name" className="field" value={petName} onChange={(e) => setPetName(e.target.value)} placeholder="Ej: Lola" maxLength={40} /></div>
               <div className="fgroup"><span className="lb wine">Número de mascotas</span><Stepper value={pets} onChange={setPets} label="mascotas" max={5} /></div>
-              <p className="hint">Después de comprar nos mandas 2 o 3 fotos de tu mascota por WhatsApp, con buena luz y donde se vea bien su carita.</p>
+              <div className="fgroup">
+                <span className="lb wine">Fotos para tu diseño <span className="soft">(hasta 3)</span></span>
+                <CustomPhotos photos={photos} onChange={setPhotos} />
+                <p className="hint">Sube fotos de tu mascota o de lo que quieras en tu bolso, con buena luz y donde se vea bien. Si prefieres, también nos las puedes mandar por WhatsApp después de comprar.</p>
+              </div>
             </>}
             <div className="fgroup"><span className="lb wine">Cantidad</span><Stepper value={qty} onChange={setQty} label="unidades" /></div>
             <button className="btn btn-solid tall" onClick={addCurrent}>Agregar a la bolsa · {money(p.price_cents * qty)}</button>
@@ -80,7 +89,7 @@ export function ProductView({ p, related, whatsapp }: { p: Product; related: Pro
               name: p.name, priceCents: p.price_cents, category: p.category, available: av.label, qty,
               options: { ...Object.fromEntries(p.options.filter((o) => sel[o.key]).map((o) => [o.label, sel[o.key]])), ...(p.is_pet ? { petName: petName.trim(), pets: String(pets) } : {}) },
               url: `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/producto/${p.slug}`,
-            }))} target="_blank" rel="noopener">Pregúntanos por WhatsApp</a>
+            }))} onClick={() => trackProduct(p.id, "whatsapp")} target="_blank" rel="noopener">Pregúntanos por WhatsApp</a>
             <div className="accs">
               {info.map((it, i) => (
                 <div className={`acc tone-${i}`} key={it.t}>

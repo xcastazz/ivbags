@@ -686,7 +686,11 @@ svg.check path { fill: none; stroke: var(--olive); stroke-width: 4; stroke-linec
 @media (max-width: 1000px) { .admin-grid.even { grid-template-columns: 1fr } .order-detail { grid-template-columns: 1fr; padding-left: 12px } }
 
 .legal-page { max-width: 800px; margin: auto; padding: 45px 24px 80px }
-.legal-page > .brand { display: block; width: max-content; margin-bottom: 55px }
+.legal-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 55px }
+.legal-top .brand { display: block; width: max-content }
+.legal-back { display: inline-block; padding: 10px 18px; border: 1px solid var(--olive); border-radius: 999px; color: var(--olive); font-size: 13px; text-decoration: none; transition: background-color .2s, color .2s }
+.legal-back:hover { background: var(--olive); color: #fff }
+.legal-back-bottom { margin-top: 32px }
 .legal-page article { max-width: 650px }
 .legal-page h1 { font-family: var(--serif); color: var(--olive); font-size: 58px; line-height: .9; font-weight: 400; margin: 10px 0 16px }
 .legal-page h2 { font-family: var(--serif); font-weight: 400; color: var(--olive); font-size: 28px; margin: 0 0 7px }
@@ -1009,3 +1013,16 @@ video.row-thumb { object-fit: cover }
 .image-tile video { width: 100%; height: 100%; object-fit: cover; display: block }
 .signin-head .signin-logo { flex: none; width: auto; margin-top: 4px; animation: rise .35s var(--ease-out) both }
 @media (max-width: 700px) { .signin-head .signin-logo { height: 40px !important } }
+
+/* Favoritos de la semana */
+.weekly-more { display: flex; justify-content: center; margin-top: 32px }
+.weekly-note { max-width: 520px; margin: 10px auto 0; font-size: 14px; line-height: 1.6; text-align: center }
+.weekly-item { position: relative; display: flex; flex-direction: column }
+.weekly-rank { position: absolute; z-index: 2; top: -10px; left: -8px; min-width: 42px; padding: 4px 10px; border-radius: 999px; background: var(--wine); color: #fff; font-size: 20px; text-align: center; pointer-events: none }
+.weekly-stats { margin: 6px 0 0; font-size: 12px; color: var(--olive) }
+
+/* Fotos para personalizar */
+.comment-thumb.uploading { background: var(--soft-olive); animation: pulse 1s ease-in-out infinite alternate }
+@keyframes pulse { from { opacity: .45 } to { opacity: 1 } }
+.order-photos { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px }
+.order-photos img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; display: block }

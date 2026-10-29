@@ -151,7 +151,10 @@ export default async function LegalDocumentPage({ params }: PageProps<"/legal/[d
   if (!item) notFound();
   return (
     <main className="legal-page">
-      <Link className="brand" href="/" aria-label="IV Bags, inicio"><Logo height={48} /></Link>
+      <div className="legal-top">
+        <Link className="brand" href="/" aria-label="IV Bags, inicio"><Logo height={48} /></Link>
+        <Link className="legal-back" href="/">← Volver a la tienda</Link>
+      </div>
       <article>
         <p className="eyebrow">Información importante</p>
         <h1>{item.title}</h1>
@@ -164,6 +167,7 @@ export default async function LegalDocumentPage({ params }: PageProps<"/legal/[d
         ))}
         <p className="legal-since">{item.since}</p>
         <nav className="legal-nav" aria-label="Otras políticas">{OTHERS.filter(([k]) => k !== document).map(([k, l]) => <Link key={k} href={`/legal/${k}`}>{l}</Link>)}</nav>
+        <Link className="legal-back legal-back-bottom" href="/">← Volver a la tienda</Link>
       </article>
     </main>
   );

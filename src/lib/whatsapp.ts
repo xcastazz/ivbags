@@ -16,7 +16,7 @@ function compose(parts: unknown[]) {
 export function describeOptions(options?: Record<string, unknown> | null) {
   return Object.entries(options ?? {})
     .filter(([k, v]) => v !== undefined && v !== null && v !== "" && !(k === "pets" && Number(v) <= 1))
-    .map(([k, v]) => `${OPTION_LABELS[k] ?? k}: ${v}`)
+    .map(([k, v]) => k === "photos" && Array.isArray(v) ? `Fotos: ${v.join(" ")}` : `${OPTION_LABELS[k] ?? k}: ${v}`)
     .join(" · ");
 }
 

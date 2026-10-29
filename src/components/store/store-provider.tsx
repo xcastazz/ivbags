@@ -4,10 +4,11 @@ import { createContext, ReactNode, useContext, useEffect, useMemo, useState } fr
 import { toast } from "sonner";
 import type { Product } from "@/lib/types";
 import { createClient, hasSupabase } from "@/lib/supabase/browser";
+import { trackProduct } from "@/lib/track";
 
 export type CartLine = {
   key: string; productId: string; slug: string; name: string; priceCents: number; image?: string;
-  sel: Record<string, string>; extra: { petName?: string; pets?: number }; qty: number;
+  sel: Record<string, string>; extra: { petName?: string; pets?: number; photos?: string[] }; qty: number;
 };
 
 type Store = {
@@ -46,6 +47,7 @@ export function lineDetail(line: CartLine) {
   const bits = Object.values(line.sel).filter(Boolean);
   if (line.extra.petName) bits.push(`Nombre: ${line.extra.petName}`);
   if ((line.extra.pets ?? 1) > 1) bits.push(`${line.extra.pets} mascotas`);
+  if (line.extra.photos?.length) bits.push(`${line.extra.photos.length} ${line.extra.photos.length === 1 ? "foto" : "fotos"}`);
   return bits.join(" · ");
 }
 
@@ -93,6 +95,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     toggleFav: (p) => {
       const on = !favs[p.id];
       setFavs((current) => ({ ...current, [p.id]: on }));
+      if (on) trackProduct(p.id, "fav");
       toast(on ? "Guardado en favoritos" : "Quitado de favoritos");
     },
   }), [cart, favs, cartOpen]);

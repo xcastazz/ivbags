@@ -11,7 +11,7 @@ import { CartDrawer } from "./cart-drawer";
 import { Logo } from "./logo";
 import { useAuth } from "@/components/auth/auth-provider";
 
-const SECTIONS = [["/", "Inicio"], ["/tienda", "Tienda"], ["/blog", "Blog"], ["/contacto", "Contacto"]] as const;
+const SECTIONS = [["/", "Inicio"], ["/tienda", "Tienda"], ["/favoritos", "Favoritos de la semana"], ["/blog", "Blog"], ["/contacto", "Contacto"]] as const;
 
 /** Barra Soft Olive + cabecera festoneada: nube "Menú", logo al centro, lupa y bolsa. */
 export function Header({ topbar, products }: { topbar: string; products: Product[] }) {

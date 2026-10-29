@@ -59,3 +59,25 @@ export async function getVideos(): Promise<StoreVideo[]> {
   const { data } = await db.from("store_videos").select("*").eq("published", true).order("sort_order").order("created_at", { ascending: false });
   return (data ?? []) as StoreVideo[];
 }
+
+export type WeeklyStat = { product_id: string; views: number; interactions: number; purchases: number; score: number };
+
+/** Ranking de los últimos 7 días (vistas, interacciones y compras pagadas). */
+export async function getWeeklyStats(): Promise<WeeklyStat[]> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("weekly");
+  const db = publicClient();
+  if (!db) return [];
+  const { data, error } = await db.rpc("weekly_favorites");
+  if (error) { console.error("getWeeklyStats", error.message); return []; }
+  return (data ?? []) as WeeklyStat[];
+}
+
+/** Productos ordenados por el ranking de la semana; los que no tienen actividad van al final en su orden normal. */
+export async function getWeeklyFavorites() {
+  const [products, stats] = await Promise.all([getProducts(), getWeeklyStats()]);
+  const rank = new Map(stats.map((s, i) => [s.product_id, i]));
+  const ranked = [...products].sort((a, b) => (rank.get(a.id) ?? Infinity) - (rank.get(b.id) ?? Infinity));
+  return { products, ranked, stats: new Map(stats.map((s) => [s.product_id, s])), hasActivity: stats.length > 0 };
+}

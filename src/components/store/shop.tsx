@@ -58,6 +58,7 @@ export function ShopView({ products, petPrice, home }: { products: Product[]; pe
       {guest && cat === "Favoritos" && <div className="gate-card standalone"><Star size={26} className="twinkle" /><h3 className="d">Tus favoritos te esperan</h3><p>Entra con tu correo para guardar y ver las piezas que te gustan.</p><button className="btn btn-solid" onClick={() => openSignIn("favorites")}>Entrar</button></div>}
       {list.length === 0 && !(guest && cat === "Favoritos") && <div className="empty-favs">{cat === "Favoritos" ? "Todavía no tienes favoritos. Toca el corazón de una pieza para guardarla aquí." : "Pronto habrá piezas en esta categoría."}</div>}
       <div className="pgrid">{(guest ? list.slice(0, PREVIEW) : list).map((p, i) => <ProductCard key={p.id} p={p} index={i} />)}</div>
+      {home && cat === "Todos" && <div className="weekly-more"><Link className="btn btn-line" href="/favoritos">Ver el ranking completo de la semana</Link></div>}
       {guest && list.length > PREVIEW && (
         <div className="preview-gate">
           <div className="pgrid ghost" aria-hidden>{list.slice(PREVIEW, PREVIEW + 5).map((p) => <div key={p.id} className="ghost-card">{p.images[0] && <img src={p.images[0]} alt="" />}</div>)}</div>
