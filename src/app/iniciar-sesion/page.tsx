@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Logo } from "@/components/store/logo";
 import { Star } from "@/components/store/icons";
 import { SignInForm } from "@/components/auth/sign-in-form";
 
@@ -22,7 +21,6 @@ export default function SignInPage() {
 
   return (
     <main className="auth-page">
-      <Link className="hlogo" href="/" aria-label="Volver a IV Bags"><Logo height={54} /></Link>
       <section className="auth-panel">
         <Star size={28} className="auth-star twinkle" />
         <SignInForm onSignedIn={(needsProfile) => { router.push(needsProfile ? "/cuenta/completar-perfil" : nextPath()); router.refresh(); }} />
