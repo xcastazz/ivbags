@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import type { AuthError } from "@supabase/supabase-js";
 import { createClient, hasSupabase } from "@/lib/supabase/browser";
 import { Star } from "@/components/store/icons";
+import { Logo } from "@/components/store/logo";
 import { OtpInput } from "./otp-input";
 
 type Step = "email" | "sending" | "code" | "verifying" | "done";
@@ -122,7 +123,7 @@ export function SignInForm({ onSignedIn, compact, intro }: { onSignedIn: (needsP
     <div className={`signin${compact ? " compact" : ""}`} data-step={step}>
       {head && (
         <header className="signin-head" key={`${step === "code" || step === "verifying" ? "code" : "email"}-${mode}`}>
-          <Envelope step={step} />
+          <Logo className="signin-logo" height={52} />
           <div className="step-in">
             <span className="lb pink">{head.eyebrow}</span>
             <h2 className="d">{head.title}</h2>
@@ -172,17 +173,3 @@ export function SignInForm({ onSignedIn, compact, intro }: { onSignedIn: (needsP
 }
 
 /** Sobre ilustrado que reacciona a cada paso: se cierra al enviar, vuela y se abre con el código. */
-function Envelope({ step }: { step: Step }) {
-  return (
-    <div className="env-anim" data-step={step} aria-hidden>
-      <svg viewBox="0 0 120 84">
-        <rect className="env-body" x="6" y="22" width="108" height="58" rx="5" />
-        <path className="env-letter" d="M20 12h80v52H20z" />
-        <path className="env-lines" d="M30 26h60M30 34h48M30 42h54" />
-        <path className="envs-front" d="M6 30l54 34 54-34v45a5 5 0 0 1-5 5H11a5 5 0 0 1-5-5z" />
-        <path className="envs-flap" d="M8 22h104L60 58z" />
-      </svg>
-      <span className="env-trail" />
-    </div>
-  );
-}

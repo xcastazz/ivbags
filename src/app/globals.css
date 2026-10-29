@@ -1007,3 +1007,5 @@ video.row-thumb { object-fit: cover }
 .thumbs .thumb-video { position: relative }
 .thumbs .thumb-video::after { content: "▶"; position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 18px; text-shadow: 0 1px 6px #0008 }
 .image-tile video { width: 100%; height: 100%; object-fit: cover; display: block }
+.signin-head .signin-logo { flex: none; width: auto; margin-top: 4px; animation: rise .35s var(--ease-out) both }
+@media (max-width: 700px) { .signin-head .signin-logo { height: 40px !important } }
