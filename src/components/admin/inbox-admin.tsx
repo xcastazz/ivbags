@@ -10,7 +10,7 @@ import { db, Empty, LoadError, Loading, mutate, PageHead, useQuery } from "./kit
 const when = (d: string) => formatDate(d, { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
 const phoneLink = (p: string, text: string) => waLink(p.replace(/\D/g, "").length === 10 ? `57${p}` : p, text);
 
-type Request = { id: string; name: string; email: string | null; phone: string | null; message: string; status: OrderStatus; created_at: string };
+type Request = { id: string; name: string; email: string | null; phone: string | null; message: string; reference_images?: string[]; status: OrderStatus; created_at: string };
 
 export function RequestsAdmin() {
   const [showAll, setShowAll] = useState(false);
@@ -29,6 +29,7 @@ export function RequestsAdmin() {
             <article key={r.id} className="inbox-item">
               <header><strong>{r.name}</strong><small>{when(r.created_at)}</small></header>
               <p className="d quote">“{r.message}”</p>
+              {!!r.reference_images?.length && <span className="order-photos">{r.reference_images.map((src) => <a key={src} href={src} target="_blank" rel="noopener" download><img src={src} alt="Foto de referencia" /></a>)}</span>}
               <small>{[r.phone, r.email].filter(Boolean).join(" · ")}</small>
               <div className="row-actions wide">
                 <select aria-label="Estado" value={r.status} onChange={(e) => setStatus(r, e.target.value as OrderStatus)}>{Object.entries(ORDER_STATUS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select>

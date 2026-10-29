@@ -85,13 +85,14 @@ export function productQuestion(p: { name: string; priceCents: number; category:
 }
 
 /** Cotización de un bolso personalizado. */
-export function customIdea(r: { name: string; phone: string; email?: string; idea: string }) {
+export function customIdea(r: { name: string; phone: string; email?: string; idea: string; photos?: string[] }) {
   return compose([
     `¡Hola, IV Bags! 🌼`,
     `Quiero cotizar un *bolso personalizado pintado a mano* (tela beige).`,
     "",
     `*💡 Mi idea*`,
     `“${r.idea}”`,
+    r.photos?.length && `*📷 Fotos de referencia*\n${r.photos.join("\n")}`,
     "",
     `*👤 Mis datos*`,
     `Nombre: ${r.name}`,

@@ -764,3 +764,6 @@ create policy "Customers upload own custom photos" on storage.objects for insert
 drop policy if exists "Customers delete own custom photos" on storage.objects;
 create policy "Customers delete own custom photos" on storage.objects for delete
   using (bucket_id = 'custom-photos' and ((storage.foldername(name))[1] = auth.uid()::text or public.has_admin_role()));
+
+-- Fotos de referencia en las cotizaciones de bolsos personalizados (se suben al bucket custom-photos del 013).
+alter table public.custom_requests add column if not exists reference_images text[] not null default '{}';

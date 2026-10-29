@@ -6,10 +6,12 @@ import { createClient, hasSupabase } from "@/lib/supabase/browser";
 import { waLink } from "@/lib/format";
 import { contactMessage, customIdea } from "@/lib/whatsapp";
 import { useAuth } from "@/components/auth/auth-provider";
+import { CustomPhotos } from "./photo-upload";
 
 /** Cotización de bolso personalizado: queda en el admin (Solicitudes) y abre WhatsApp. */
 export function IdeaForm({ whatsapp }: { whatsapp: string }) {
   const [idea, setIdea] = useState("");
+  const [photos, setPhotos] = useState<string[]>([]);
   const [sending, setSending] = useState(false);
   const { guest, user, openSignIn } = useAuth();
 
@@ -23,13 +25,14 @@ export function IdeaForm({ whatsapp }: { whatsapp: string }) {
     const email = String(form.get("email") || "").trim();
     setSending(true);
     if (hasSupabase()) {
-      const { error } = await createClient().from("custom_requests").insert({ customer_id: user?.id, name, email: email || null, phone, message: idea.trim() });
+      const { error } = await createClient().from("custom_requests").insert({ customer_id: user?.id, name, email: email || null, phone, message: idea.trim(), ...(photos.length ? { reference_images: photos } : {}) });
       if (error) { setSending(false); return toast.error("No pudimos guardar tu idea", { description: "Intenta de nuevo o escríbenos por WhatsApp." }); }
     }
     setSending(false);
-    toast.success("Recibimos tu idea", { description: "Te escribimos para cotizarla.", action: { label: "Abrir WhatsApp", onClick: () => window.open(waLink(whatsapp, customIdea({ name, phone, email, idea: idea.trim() })), "_blank", "noopener") } });
+    toast.success("Recibimos tu idea", { description: "Te escribimos para cotizarla.", action: { label: "Abrir WhatsApp", onClick: () => window.open(waLink(whatsapp, customIdea({ name, phone, email, idea: idea.trim(), photos })), "_blank", "noopener") } });
     formEl.reset();
     setIdea("");
+    setPhotos([]);
   }
 
   return (
@@ -37,6 +40,10 @@ export function IdeaForm({ whatsapp }: { whatsapp: string }) {
       <label className="lb wine" htmlFor="idea">Cuéntanos tu idea</label>
       <textarea id="idea" className="field" value={idea} onChange={(e) => setIdea(e.target.value)} placeholder="Ej: mi nombre con margaritas y una luna" required maxLength={800} rows={3} />
       <div className="idea-preview" aria-live="polite">{idea ? `“${idea}”` : "Tu idea aparecerá aquí."}</div>
+      <div className="fgroup">
+        <span className="lb wine">Fotos de referencia <span className="soft">(opcional, hasta 3)</span></span>
+        <CustomPhotos photos={photos} onChange={setPhotos} />
+      </div>
       <div className="form-cols">
         <div className="fgroup"><label className="lb wine" htmlFor="idea-name">Nombre</label><input id="idea-name" name="name" className="field" autoComplete="name" required /></div>
         <div className="fgroup"><label className="lb wine" htmlFor="idea-phone">WhatsApp</label><input id="idea-phone" name="phone" type="tel" className="field" autoComplete="tel" required placeholder="300 000 0000" /></div>
