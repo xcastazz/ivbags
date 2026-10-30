@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import type { AuthError } from "@supabase/supabase-js";
 import { createClient, hasSupabase } from "@/lib/supabase/browser";
 import { Star } from "@/components/store/icons";
-import { Logo } from "@/components/store/logo";
 import { OtpInput } from "./otp-input";
 
 type Step = "email" | "sending" | "code" | "verifying" | "done";
@@ -123,7 +122,8 @@ export function SignInForm({ onSignedIn, compact, intro }: { onSignedIn: (needsP
     <div className={`signin${compact ? " compact" : ""}`} data-step={step}>
       {head && (
         <header className="signin-head" key={`${step === "code" || step === "verifying" ? "code" : "email"}-${mode}`}>
-          <Logo className="signin-logo" height={52} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="signin-logo" src="/brand/logo-ivbags.png" alt="IV Bags" height={110} style={{ height: 110 }} />
           <div className="step-in">
             <span className="lb pink">{head.eyebrow}</span>
             <h2 className="d">{head.title}</h2>

@@ -23,7 +23,7 @@ const BRAND_JSON_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@graph": [
     { "@type": "WebSite", name: "IV Bags", alternateName: ["ivbags", "IV Bags Medellín"], url: SITE_URL },
-    { "@type": "Store", name: "IV Bags", alternateName: "ivbags", url: SITE_URL, logo: `${SITE_URL}/icon.svg`, description: DESCRIPTION, email: "ivbags.taller@gmail.com", telephone: "+573133264049", address: { "@type": "PostalAddress", addressLocality: "Medellín", addressRegion: "Antioquia", addressCountry: "CO" }, sameAs: ["https://instagram.com/iv_totebags"] },
+    { "@type": "Store", name: "IV Bags", alternateName: "ivbags", url: SITE_URL, logo: `${SITE_URL}/brand/logo-ivbags.png`, description: DESCRIPTION, email: "ivbags.taller@gmail.com", telephone: "+573133264049", address: { "@type": "PostalAddress", addressLocality: "Medellín", addressRegion: "Antioquia", addressCountry: "CO" }, sameAs: ["https://instagram.com/iv_totebags"] },
   ],
 });
 

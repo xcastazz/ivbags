@@ -55,7 +55,7 @@ export function AdminNotifications() {
         setItems((list) => (list.some((x) => x.id === n.id) ? list : [n, ...list].slice(0, LIMIT)));
         toast(n.title, { description: n.body ?? undefined, action: n.href ? { label: "Ver", onClick: () => go(n) } : undefined });
         ping();
-        if (document.hidden && "Notification" in window && Notification.permission === "granted") new Notification(n.title, { body: n.body ?? undefined, icon: "/icon.svg"});
+        if (document.hidden && "Notification" in window && Notification.permission === "granted") new Notification(n.title, { body: n.body ?? undefined, icon: "/icon"});
       })
       .subscribe();
     const timer = setInterval(load, 60000);
